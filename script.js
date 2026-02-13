@@ -1,15 +1,21 @@
 let player;
 let isMusicPlaying = false;
+
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
         height: '10',
         width: '10',
-        videoId: 'h_m-BjrxmgI', 
-        host: 'https://www.youtube-nocookie.com',
+        videoId: 'h_m-BjrxmgI',
+        host: 'https://www.youtube-nocookie.com', 
         playerVars: {
             'autoplay': 0,
             'controls': 0,
-            'start': 0 
+            'start': 0
+        },
+        events: {
+            'onReady': function(event) {
+                event.target.setVolume(30); 
+            }
         }
     });
 }
