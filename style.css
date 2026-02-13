@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(135deg, #fff5f7, #ffe3e8); /* Softer, prettier background */
+    background: #fff0f3; /* Softest pink */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
@@ -7,44 +7,73 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Floating Hearts Background */
+.hearts-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.heart {
+    position: absolute;
+    color: #ffb6c1;
+    font-size: 1.5rem;
+    animation: floatUp 8s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    20% { opacity: 0.8; }
+    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
 }
 
 .app-container {
-    background: white;
+    background: rgba(255, 255, 255, 0.9);
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(255, 182, 193, 0.4);
+    box-shadow: 0 15px 30px rgba(255, 182, 193, 0.6);
     text-align: center;
     width: 100%;
     max-width: 450px;
     border: 3px solid #ffb6c1;
+    backdrop-filter: blur(5px);
 }
 
 h1 { color: #d63384; font-size: 1.8rem; margin-bottom: 5px;}
 h3 { color: #ff4d6d; margin-bottom: 15px; }
 
+.countdown-text {
+    color: #c9184a;
+    font-weight: bold;
+    font-size: 1.1rem;
+    background: #ffe3e8;
+    padding: 5px;
+    border-radius: 10px;
+}
+
 .gift-display {
     margin: 1.5rem 0;
     padding: 2rem;
     border-radius: 15px;
-    background: #fff0f3;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-/* This is the new animation for the reveal */
 @keyframes popIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    80% { transform: scale(1.1); opacity: 1; }
+    0% { transform: scale(0.8); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
 }
+.pop-animation { animation: popIn 0.5s ease forwards; }
 
-.pop-animation {
-    animation: popIn 0.5s ease forwards;
-}
-
-#gift-emoji { font-size: 5rem; margin-bottom: 10px; }
+#gift-emoji { font-size: 5.5rem; margin-bottom: 10px; }
 
 #reveal-btn {
-    background-color: #ff4d6d;
+    background: linear-gradient(45deg, #ff4d6d, #d63384);
     color: white;
     border: none;
     padding: 15px 30px;
@@ -52,32 +81,21 @@ h3 { color: #ff4d6d; margin-bottom: 15px; }
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 77, 109, 0.4);
 }
+#reveal-btn:hover { transform: scale(1.05); }
+#reveal-btn:disabled { background: #ccc; transform: none; cursor: not-allowed; }
 
-#reveal-btn:hover { 
-    background-color: #c9184a; 
-    transform: translateY(-2px);
-}
+.divider { border: 0; height: 1px; background: #ffb6c1; margin: 30px 0; }
 
-.divider {
-    border: 0;
-    height: 1px;
-    background: #ffb6c1;
-    margin: 30px 0;
-}
-
-/* Grid styles for the memory box */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }
-
 .grid-item {
-    background: #fff0f3;
-    padding: 10px;
+    background: white;
     border-radius: 10px;
     font-size: 1.5rem;
     border: 1px solid #ffb6c1;
@@ -85,11 +103,7 @@ h3 { color: #ff4d6d; margin-bottom: 15px; }
     justify-content: center;
     align-items: center;
     height: 50px;
+    transition: transform 0.3s ease;
 }
-
-.locked {
-    background: #f8f9fa;
-    border-color: #dee2e6;
-    filter: grayscale(100%);
-    opacity: 0.5;
-}
+.locked { background: #f8f9fa; filter: grayscale(100%); opacity: 0.4; }
+.unlocked { box-shadow: 0 2px 5px rgba(255, 182, 193, 0.5); }
