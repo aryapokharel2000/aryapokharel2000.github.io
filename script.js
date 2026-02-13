@@ -16,7 +16,7 @@ const bouquets = [
 
     { emoji: "🏵️", name: "Marigold Bouquet", message: "You are my favorite notification and my favorite thought." },
 
-    { emoji: "💮", name: "White Peonies", message: "Best of luck for your modelling contest." },
+    { emoji: "💮", name: "White Peonies", message: "Best of luck for your modelling thing." },
 
     { emoji: "💐", name: "Wildflower Bouquet", message: "I love you more than words, texts, and video calls can say." },
 
@@ -24,7 +24,7 @@ const bouquets = [
 
     { emoji: "🍫", name: "Chocolate Bouquet", message: "Timilai chocolate maan pardaina k garnu." },
 
-    { emoji: "🧸", name: "Teddy Bear & Roses", message: "A virtual hug until I can give you a real one!" },
+    { emoji: "🧸", name: "Teddy Bear & Roses", message: "A virtual hug until I can give you a real one! Soo proud of you." },
 
     { emoji: "💖", name: "My Heart", message: "Happy Valentine's Day! Lovee you cutulii 🥰" }
 
