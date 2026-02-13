@@ -1,6 +1,7 @@
 body {
-    background: #fff0f3; /* Softest pink */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #FAF6F0; /* Elegant soft beige/cream */
+    font-family: 'Poppins', sans-serif;
+    color: #4A4A4A;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,7 +11,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Floating Hearts Background */
+/* Subtle, elegant floating hearts/petals */
 .hearts-bg {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -20,90 +21,164 @@ body {
 
 .heart {
     position: absolute;
-    color: #ffb6c1;
-    font-size: 1.5rem;
-    animation: floatUp 8s linear infinite;
-    opacity: 0.6;
+    color: #E8C1C9; /* Soft dusty pink */
+    font-size: 1.2rem;
+    animation: floatUp 10s linear infinite;
+    opacity: 0.4;
+    filter: blur(1px);
 }
 
 @keyframes floatUp {
-    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-    20% { opacity: 0.8; }
-    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    0% { transform: translateY(100vh) scale(0.8) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
 }
 
 .app-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(255, 182, 193, 0.6);
+    background: #FFFFFF;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
     text-align: center;
     width: 100%;
-    max-width: 450px;
-    border: 3px solid #ffb6c1;
-    backdrop-filter: blur(5px);
+    max-width: 420px;
+    position: relative;
+    overflow: hidden;
 }
 
-h1 { color: #d63384; font-size: 1.8rem; margin-bottom: 5px;}
-h3 { color: #ff4d6d; margin-bottom: 15px; }
-
-.countdown-text {
-    color: #c9184a;
-    font-weight: bold;
-    font-size: 1.1rem;
-    background: #ffe3e8;
-    padding: 5px;
-    border-radius: 10px;
+h1, h2, h3 {
+    font-family: 'Lora', serif; /* Elegant, editorial font */
+    color: #2C2C2C;
+    margin-bottom: 5px;
 }
+
+h1 { font-size: 1.8rem; font-style: italic; color: #B56576; }
+.subtitle { font-size: 0.85rem; color: #888; margin-bottom: 20px; font-weight: 300; }
+
+h3 { font-size: 1.1rem; color: #B56576; margin-bottom: 15px; }
 
 .gift-display {
     margin: 1.5rem 0;
-    padding: 2rem;
-    border-radius: 15px;
-    background: white;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-@keyframes popIn {
-    0% { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+/* The DigiBouquet style aesthetic wrapper */
+.flower-wrapper {
+    background: linear-gradient(135deg, #FDF1F4, #FFF);
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 20px rgba(229, 152, 155, 0.1), 0 10px 20px rgba(0,0,0,0.03);
+    margin-bottom: 20px;
+    border: 1px solid rgba(229, 152, 155, 0.2);
 }
-.pop-animation { animation: popIn 0.5s ease forwards; }
 
-#gift-emoji { font-size: 5.5rem; margin-bottom: 10px; }
+#gift-emoji { 
+    font-size: 4.5rem; 
+    filter: drop-shadow(0 8px 8px rgba(0,0,0,0.15)); /* Adds 3D depth to emoji */
+}
+
+#gift-name {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Beautiful card for your messages */
+.letter-box {
+    background: #FAFAFA;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border-left: 3px solid #B56576;
+    margin-bottom: 20px;
+    width: 90%;
+}
+
+#gift-message {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 300;
+}
 
 #reveal-btn {
-    background: linear-gradient(45deg, #ff4d6d, #d63384);
+    background: #B56576; /* Sophisticated muted rose */
     color: white;
     border: none;
-    padding: 15px 30px;
+    padding: 14px 28px;
     border-radius: 30px;
-    font-size: 1.1rem;
-    font-weight: bold;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    font-family: 'Poppins', sans-serif;
     cursor: pointer;
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 10px rgba(255, 77, 109, 0.4);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(181, 101, 118, 0.25);
+    width: 100%;
 }
-#reveal-btn:hover { transform: scale(1.05); }
-#reveal-btn:disabled { background: #ccc; transform: none; cursor: not-allowed; }
 
-.divider { border: 0; height: 1px; background: #ffb6c1; margin: 30px 0; }
+#reveal-btn:hover { 
+    background: #9D5363; 
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(181, 101, 118, 0.35);
+}
+
+#reveal-btn:disabled { 
+    background: #E0E0E0; 
+    color: #A0A0A0;
+    transform: none; 
+    cursor: not-allowed; 
+    box-shadow: none;
+}
+
+.divider { 
+    border: 0; 
+    height: 1px; 
+    background: linear-gradient(90deg, transparent, #E8C1C9, transparent); 
+    margin: 30px 0; 
+}
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 12px;
 }
+
 .grid-item {
-    background: white;
-    border-radius: 10px;
+    background: #FAFAFA;
+    border-radius: 12px;
     font-size: 1.5rem;
-    border: 1px solid #ffb6c1;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
+    height: 55px;
     transition: transform 0.3s ease;
+    border: 1px solid #F0F0F0;
 }
-.locked { background: #f8f9fa; filter: grayscale(100%); opacity: 0.4; }
-.unlocked { box-shadow: 0 2px 5px rgba(255, 182, 193, 0.5); }
+
+.locked { 
+    background: #F5F5F5; 
+    color: #DDD;
+    font-size: 1.2rem;
+}
+
+.unlocked { 
+    background: #FFFFFF;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
+    border-color: #FDF1F4;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.pop-animation { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
