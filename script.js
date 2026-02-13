@@ -4,11 +4,12 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
         height: '10',
         width: '10',
-        videoId: 'h_m-BjrxmgI',
+        videoId: 'h_m-BjrxmgI', 
+        host: 'https://www.youtube-nocookie.com',
         playerVars: {
             'autoplay': 0,
             'controls': 0,
-            'start': 11
+            'start': 11 
         }
     });
 }
