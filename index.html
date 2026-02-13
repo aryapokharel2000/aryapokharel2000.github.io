@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Surprises for You</title>
+    <title>A Bouquet A Day</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="hearts-bg" id="hearts-bg"></div>
+
     <div class="app-container">
         <header>
-            <h1>14 Days of You & Me ❤️</h1>
-            <p id="date-display"></p>
+            <h1>14 Bouquets For My Girl 💐</h1>
+            <p id="countdown-display" class="countdown-text"></p>
         </header>
         
         <div class="gift-display" id="gift-card">
-            <div id="gift-emoji">🎁</div>
-            <h2 id="gift-name">Ready for today's surprise?</h2>
-            <p id="gift-message">Click below to open.</p>
+            <div id="gift-emoji">💌</div>
+            <h2 id="gift-name">Your Virtual Bouquets</h2>
+            <p id="gift-message">Click below to take a walk down memory lane and see all the flowers I picked for you.</p>
         </div>
 
-        <button id="reveal-btn">Open Today's Gift</button>
+        <button id="reveal-btn">Play Memory Lane</button>
 
         <hr class="divider">
 
         <div class="collection-section">
-            <h3>Your Memory Box</h3>
-            <div id="collection-grid" class="grid-container">
-                </div>
+            <h3>Your Bouquet Collection</h3>
+            <div id="collection-grid" class="grid-container"></div>
         </div>
     </div>
     <script src="script.js"></script>
