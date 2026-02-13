@@ -9,7 +9,7 @@ function onYouTubeIframeAPIReady() {
         playerVars: {
             'autoplay': 0,
             'controls': 0,
-            'start': 11 
+            'start': 0 
         }
     });
 }
