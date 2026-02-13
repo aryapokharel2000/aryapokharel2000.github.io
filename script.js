@@ -1,63 +1,47 @@
-// 14 Cheesy Bouquets
+// 14 Cheesy, Long-Distance Bouquets with your personal touches!
 const bouquets = [
-    { emoji: "🌻", name: "Sunflower Bouquet", message: "Because you light up my darkest days." },
-    { emoji: "🌷", name: "Tulip Bouquet", message: "Our love is blooming more beautifully every day." },
-    { emoji: "🌼", name: "Daisy Bouquet", message: "I picked these just to say... I'm crazy for you." },
-    { emoji: "🌸", name: "Cherry Blossoms", message: "My love for you is always in full bloom." },
-    { emoji: "🪻", name: "Lavender Bouquet", message: "You bring peace and sweet magic to my life." },
-    { emoji: "🌺", name: "Tropical Bouquet", message: "For a girl who is as rare and stunning as an island flower." },
-    { emoji: "🥀", name: "Single Red Rose", message: "A classic start, because you're my classic love." },
-    { emoji: "🏵️", name: "Marigold Bouquet", message: "Golden and bright, exactly like your smile." },
-    { emoji: "💮", name: "White Peonies", message: "So elegant, soft, and absolutely perfect—just like you." },
-    { emoji: "💐", name: "Wildflower Bouquet", message: "I love you wildly, madly, and completely." },
-    { emoji: "🌹", name: "Rose Gold Bouquet", message: "Because you are precious and shine so bright." },
-    { emoji: "🍫", name: "Chocolate Bouquet", message: "Flowers are sweet, but you're the sweetest thing I know." },
-    { emoji: "🧸", name: "Teddy Bear & Roses", message: "To cuddle when I can't be right there holding you." },
-    { emoji: "💖", name: "The Grand Valentine", message: "Happy Valentine's Day! My heart belongs to you, today and forever." }
+    { emoji: "🌻", name: "Sunshine Bouquet", message: "Sending a little sunshine all the way to Butwal for you." },
+    { emoji: "🌷", name: "Tulip Bouquet", message: "Every minute we are apart is a minute I spend missing you." },
+    { emoji: "🌼", name: "Daisy Bouquet", message: "The distance between us is temporary cutu, but mero maya is permanent." },
+    { emoji: "🌸", name: "Cherry Blossoms", message: "Just counting down the hours so I can finally hold you again." },
+    { emoji: "🪻", name: "Lavender Bouquet", message: "I wish I could teleport from Kathmandu right to your doorstep and do notty stuffs" },
+    { emoji: "🌺", name: "Tropical Bouquet", message: "No matter how many miles are between us, you are always in my heart." },
+    { emoji: "🥀", name: "Single Red Rose", message: "Because one look at you makes all the waiting worth it." },
+    { emoji: "🏵️", name: "Marigold Bouquet", message: "You are my favorite notification and my favorite thought." },
+    { emoji: "💮", name: "White Peonies", message: "I can't wait to see that beautiful smile of yours in person." },
+    { emoji: "💐", name: "Wildflower Bouquet", message: "I love you more than words, texts, and video calls can say." },
+    { emoji: "🌹", name: "Rose Gold Bouquet", message: "Almost there! Keep opening, my love." },
+    { emoji: "🍫", name: "Chocolate Bouquet", message: "Something sweet, but still not as sweet as the day we reunite." },
+    { emoji: "🧸", name: "Teddy Bear & Roses", message: "A virtual hug until I can give you a real one!" },
+    { emoji: "💖", name: "My Heart", message: "Happy Valentine's Day! timi mero hau mero bhayerai hami jasko lagi lekheni timi mero hau mero bhayera hami hehehe luv you cutulii 🥰" }
 ];
 
 const btn = document.getElementById('reveal-btn');
 const emojiDisp = document.getElementById('gift-emoji');
 const nameDisp = document.getElementById('gift-name');
 const msgDisp = document.getElementById('gift-message');
-const countdownDisp = document.getElementById('countdown-display');
 const grid = document.getElementById('collection-grid');
 
-// 1. Generate Floating Hearts Background
+let currentGiftIndex = 0;
+let finalUnlockTime = null;
+let cheatDetected = false;
+
+// Anti-Cheat: Secret console message if she opens Developer Tools
+console.log("%cHey cutuli! I see you checking the console... no cheating allowed! hmphh only hmphh", "color: #ff4d6d; font-size: 16px; font-weight: bold;");
+
+// Generate Floating Hearts Background
 const bg = document.getElementById('hearts-bg');
 for(let i=0; i<15; i++) {
     const heart = document.createElement('div');
     heart.innerHTML = "🤍";
     heart.classList.add('heart');
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random() * 5 + 5) + "s"; // Random speed
+    heart.style.animationDuration = (Math.random() * 5 + 5) + "s";
     heart.style.animationDelay = (Math.random() * 5) + "s";
     bg.appendChild(heart);
 }
 
-// 2. Valentine's Day Countdown Logic
-function updateCountdown() {
-    const now = new Date();
-    // Set target to Feb 14 of the current year (Months are 0-indexed in JS, so 1 = Feb)
-    const vDay = new Date(now.getFullYear(), 1, 14, 0, 0, 0); 
-    
-    const diff = vDay - now;
-
-    if (diff <= 0) {
-        countdownDisp.innerText = "Happy Valentine's Day! ❤️";
-        return true; // Valentine's Day is here!
-    } else {
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / 1000 / 60) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
-        countdownDisp.innerText = `⏳ Unlocking final bouquet in: ${hours}h ${mins}m ${secs}s`;
-        return false; // Still waiting
-    }
-}
-// Start countdown ticking every second
-setInterval(updateCountdown, 1000);
-
-// 3. Setup the Grid
+// Build the Memory Box Grid
 function buildGrid(unlockedCount) {
     grid.innerHTML = "";
     for (let i = 0; i < 14; i++) {
@@ -73,44 +57,85 @@ function buildGrid(unlockedCount) {
         grid.appendChild(item);
     }
 }
-buildGrid(0); // Start with everything locked
 
-// 4. Memory Lane Playback Logic
+// Start with everything locked
+buildGrid(0);
+
+// The Click Logic
 btn.addEventListener('click', () => {
-    btn.disabled = true;
-    btn.innerText = "Walking down memory lane... 🚶‍♂️";
-    
-    let currentDayIndex = 0;
-    const isVDay = updateCountdown(); // Check if today is the 14th
-    const maxDaysToPlay = isVDay ? 14 : 13; // Play all 14 if it's V-Day, else stop at 13
+    // 1. If she previously cheated, keep displaying the hmphh message
+    if (cheatDetected) {
+        emojiDisp.innerText = "😒";
+        nameDisp.innerText = "Caught You Cheating!";
+        msgDisp.innerText = "hmphh only hmphh";
+        return;
+    }
 
-    // Show a new bouquet every 3.5 seconds
-    const playbackTimer = setInterval(() => {
-        const bouquet = bouquets[currentDayIndex];
+    // 2. Anti-Cheat Check: If she tries to click the final button before 24 hours
+    if (currentGiftIndex === 13 && Date.now() < finalUnlockTime) {
+        cheatDetected = true;
+        emojiDisp.innerText = "😒";
+        nameDisp.innerText = "Naughty Naughty!";
+        msgDisp.innerText = "hmphh only hmphh";
+        btn.innerText = "hmphh only hmphh";
+        btn.disabled = true;
         
-        // Re-trigger animation
         emojiDisp.classList.remove('pop-animation');
         void emojiDisp.offsetWidth;
         emojiDisp.classList.add('pop-animation');
+        return;
+    }
 
-        // Update Text
-        emojiDisp.innerText = bouquet.emoji;
-        nameDisp.innerText = `Day ${currentDayIndex + 1}: ${bouquet.name}`;
-        msgDisp.innerText = bouquet.message;
+    // 3. Reveal the Current Gift
+    const bouquet = bouquets[currentGiftIndex];
+    
+    // Re-trigger animation
+    emojiDisp.classList.remove('pop-animation');
+    void emojiDisp.offsetWidth;
+    emojiDisp.classList.add('pop-animation');
 
-        // Unlock in grid
-        buildGrid(currentDayIndex + 1);
+    emojiDisp.innerText = bouquet.emoji;
+    nameDisp.innerText = bouquet.name;
+    msgDisp.innerText = bouquet.message;
 
-        currentDayIndex++;
+    // 4. Unlock it in the grid below
+    currentGiftIndex++;
+    buildGrid(currentGiftIndex);
 
-        // Stop the timer when we reach the max day
-        if (currentDayIndex >= maxDaysToPlay) {
-            clearInterval(playbackTimer);
-            if (!isVDay) {
-                btn.innerText = "Come back tomorrow for the Grand Finale! ❤️";
+    // 5. If she just opened Gift #13, lock everything for 24 hours!
+    if (currentGiftIndex === 13) {
+        // Set unlock time to exactly 24 hours from right now
+        finalUnlockTime = Date.now() + (24 * 60 * 60 * 1000);
+        btn.disabled = true;
+
+        const timer = setInterval(() => {
+            const now = Date.now();
+            const diff = finalUnlockTime - now;
+
+            if (diff <= 0) {
+                // 24 hours have passed!
+                clearInterval(timer);
+                btn.disabled = false;
+                btn.innerText = "Open your final Valentine's gift! 💖";
             } else {
-                btn.innerText = "I love you! 🥰";
+                // Calculate hours, minutes, seconds
+                const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const m = Math.floor((diff / 1000 / 60) % 60);
+                const s = Math.floor((diff / 1000) % 60);
+                btn.innerText = `Final gift in ${h}h ${m}m ${s}s ⏳`;
             }
-        }
-    }, 3500); // 3500 milliseconds = 3.5 seconds per bouquet
+        }, 1000);
+        
+        return; // Stop here so button text doesn't change
+    }
+
+    // 6. Check if she finished all 14 gifts safely
+    if (currentGiftIndex >= bouquets.length) {
+        btn.innerText = "I cannot wait to see you! ❤️";
+        btn.disabled = true;
+        return;
+    }
+
+    // 7. For gifts 1 through 12, just let her keep clicking instantly!
+    btn.innerText = "Open next surprise! 🎁";
 });
