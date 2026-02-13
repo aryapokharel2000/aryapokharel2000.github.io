@@ -1,0 +1,45 @@
+body {
+    background-color: #fff5f7; /* Very light pink/white */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.app-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(255, 182, 193, 0.5);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    border: 2px solid #ffb6c1;
+}
+
+h1 { color: #d63384; font-size: 1.5rem; }
+
+.flower-display {
+    margin: 2rem 0;
+    padding: 2rem;
+    border-radius: 15px;
+    background: #fff0f3;
+    transition: transform 0.3s ease;
+}
+
+#flower-emoji { font-size: 5rem; margin-bottom: 10px; }
+
+#reveal-btn {
+    background-color: #ff4d6d; /* Reddish Pink */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#reveal-btn:hover { background-color: #c9184a; }
