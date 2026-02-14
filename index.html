@@ -7,10 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <style>
 :root {
-    --lh: clamp(20px, 3.8vh, 32px);
+    --lh: 36px;
     --kagaz: #F2E8D5;
     --ink: #2c3e50;
-    --line: rgba(166, 115, 123, 0.4);
+    --line: rgba(166, 115, 123, 0.35);
 }
 body {
     background: #1a1a1a;
@@ -20,6 +20,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     font-family: 'Playfair Display', serif;
 }
@@ -30,11 +31,11 @@ body {
 }
 .heart {
     position: absolute;
-    color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.12);
     font-size: 2rem;
     opacity: 0;
     animation: floatUp linear infinite;
-    filter: blur(2px);
+    filter: blur(1px);
 }
 @keyframes floatUp {
     0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
@@ -46,132 +47,130 @@ body {
     text-align: center;
     z-index: 10;
     padding: 20px;
+    position: absolute;
+    width: 100%;
 }
 .entry-screen h2 {
     color: #F2E8D5;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-style: italic;
     font-weight: 400;
     margin-bottom: 40px;
-    letter-spacing: 1.5px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
 }
 .wax-seal {
     background: linear-gradient(135deg, #a62b3b, #7a1b26);
     color: #FAF6F0;
     border: none;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     border-radius: 50% 50% 45% 55% / 55% 45% 50% 50%;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     cursor: pointer;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 15px 25px rgba(0,0,0,0.6);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.3s ease;
     border: 2px solid #5a1019;
-}
-.wax-seal:hover {
-    transform: scale(1.15) rotate(8deg);
 }
 .final-letter {
     display: none;
-    width: 96vw;
-    height: 94vh;
-    max-width: 1200px;
+    width: 100%;
+    height: 100%;
     z-index: 10;
     align-items: center;
     justify-content: center;
 }
-.paper-wrapper {
+.paper {
+    width: 92vw;
+    max-width: 600px;
+    height: 85vh;
+    background-color: var(--kagaz);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
     position: relative;
+    border-radius: 2px;
+    filter: drop-shadow(0 0 5px rgba(242,232,213,0.1));
+}
+.paper::before, .paper::after {
+    content: "";
+    position: absolute;
+    width: 100%; height: 5px;
+    background: inherit;
+    z-index: 5;
+}
+.paper::before { top: -2px; clip-path: polygon(0% 0%, 5% 100%, 10% 0%, 15% 100%, 20% 0%, 25% 100%, 30% 0%, 35% 100%, 40% 0%, 45% 100%, 50% 0%, 55% 100%, 60% 0%, 65% 100%, 70% 0%, 75% 100%, 80% 0%, 85% 100%, 90% 0%, 95% 100%, 100% 0%); }
+.paper::after { bottom: -2px; clip-path: polygon(0% 100%, 5% 0%, 10% 100%, 15% 0%, 20% 100%, 25% 0%, 30% 100%, 35% 0%, 40% 100%, 45% 0%, 50% 100%, 55% 0%, 60% 100%, 65% 0%, 70% 100%, 75% 0%, 80% 100%, 85% 0%, 90% 100%, 95% 0%, 100% 100%); }
+.scroll-container {
     width: 100%;
     height: 100%;
-    padding: 2vw;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.paper-bg {
-    position: absolute;
-    top: 2%; left: 2%; right: 2%; bottom: 2%;
-    background-color: var(--kagaz);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E");
-    filter: url(#torn-edges);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 60px rgba(139, 115, 85, 0.3);
-    z-index: -1;
-}
-.paper-content {
-    width: 90%;
-    height: 85%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
     position: relative;
     z-index: 2;
 }
-.lined-area {
-    width: 100%;
-    height: 100%;
-    column-count: 2;
-    column-gap: 5vw;
-    column-rule: 1px solid rgba(166, 115, 123, 0.2);
-    background-image: repeating-linear-gradient(transparent, transparent calc(var(--lh) - 1px), var(--line) var(--lh));
-    background-position: 0 0;
-    background-origin: content-box;
+.scroll-container::-webkit-scrollbar {
+    width: 6px;
 }
-.lined-area p {
+.scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(139, 115, 85, 0.4);
+    border-radius: 10px;
+}
+.text-content {
+    padding: 30px 25px;
+    min-height: 100%;
+    background-image: repeating-linear-gradient(transparent, transparent calc(var(--lh) - 1px), var(--line) var(--lh));
+    background-attachment: local;
+    box-sizing: border-box;
+}
+.text-content p {
     font-family: 'Caveat', cursive;
-    font-size: calc(var(--lh) * 0.72);
+    font-size: 24px;
     line-height: var(--lh);
     color: var(--ink);
     margin: 0 0 var(--lh) 0;
     font-weight: 600;
-    text-indent: 20px;
     letter-spacing: 0.5px;
-    break-inside: avoid;
 }
-.lined-area p.greeting {
-    text-indent: 0;
-    font-size: calc(var(--lh) * 0.85);
+.text-content p.greeting {
+    font-size: 26px;
     font-weight: 700;
     color: #8c3a47;
+    margin-bottom: calc(var(--lh) * 1);
 }
-.lined-area p.signature {
-    text-indent: 0;
+.text-content p.signature {
     text-align: right;
     margin-top: calc(var(--lh) * 1);
     color: #8c3a47;
 }
 .hand-drawn-flower {
     position: absolute;
-    width: 12vh;
+    width: 80px;
     height: auto;
-    opacity: 0.6;
+    opacity: 0.5;
     pointer-events: none;
-    z-index: 3;
-    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.1));
+    z-index: 1;
 }
-.flower-1 { top: -2vh; left: -2vw; transform: rotate(-15deg); }
-.flower-2 { bottom: -2vh; right: -2vw; transform: rotate(165deg); }
-.flower-3 { top: -2vh; right: -2vw; transform: rotate(75deg); width: 8vh; }
+.flower-top { top: 10px; left: 10px; transform: rotate(-15deg); }
+.flower-bottom { bottom: 10px; right: 10px; transform: rotate(165deg); }
 .pop-animation {
-    animation: unfold 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation: unfold 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 @keyframes unfold {
-    0% { opacity: 0; transform: scale(0.8) translateY(50px) rotate(-3deg); filter: blur(10px); }
-    100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); filter: blur(0); }
+    0% { opacity: 0; transform: scale(0.9) translateY(30px); filter: blur(5px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 }
 </style>
 </head>
 <body>
-
-<svg style="position: absolute; width: 0; height: 0;">
-    <filter id="torn-edges">
-        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
-    </filter>
-</svg>
 
 <div style="position: absolute; top: -9999px; left: -9999px;">
     <div id="youtube-player"></div>
@@ -185,23 +184,14 @@ body {
 </div>
 
 <div class="final-letter" id="final-letter">
-    <div class="paper-wrapper">
-        <div class="paper-bg"></div>
-        <div class="paper-content">
-            
-            <svg class="hand-drawn-flower flower-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 180 C100 120, 110 90, 100 40 M100 130 C70 110, 50 130, 40 90 M100 100 C130 80, 150 100, 160 60 M100 40 C80 20, 60 40, 70 60 C80 80, 100 60, 100 40 M100 40 C120 20, 140 40, 130 60 C120 80, 100 60, 100 40 M70 60 C50 60, 60 80, 80 90 M130 60 C150 60, 140 80, 120 90 M80 90 C90 110, 110 110, 120 90" fill="none" stroke="#7a5c61" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="100" cy="55" r="4" fill="#7a5c61"/>
-            </svg>
-            <svg class="hand-drawn-flower flower-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <path d="M100 180 C100 120, 110 90, 100 40 M100 130 C70 110, 50 130, 40 90 M100 100 C130 80, 150 100, 160 60 M100 40 C80 20, 60 40, 70 60 C80 80, 100 60, 100 40 M100 40 C120 20, 140 40, 130 60 C120 80, 100 60, 100 40 M70 60 C50 60, 60 80, 80 90 M130 60 C150 60, 140 80, 120 90 M80 90 C90 110, 110 110, 120 90" fill="none" stroke="#7a5c61" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="100" cy="55" r="4" fill="#7a5c61"/>
-            </svg>
-            <svg class="hand-drawn-flower flower-3" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 90 C50 60, 55 45, 50 20 M50 65 C35 55, 25 65, 20 45 M50 50 C65 40, 75 50, 80 30" fill="none" stroke="#7a5c61" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+    <div class="paper">
+        
+        <svg class="hand-drawn-flower flower-top" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 180 C100 120, 110 90, 100 40 M100 130 C70 110, 50 130, 40 90 M100 100 C130 80, 150 100, 160 60 M100 40 C80 20, 60 40, 70 60 C80 80, 100 60, 100 40 M100 40 C120 20, 140 40, 130 60 C120 80, 100 60, 100 40 M70 60 C50 60, 60 80, 80 90 M130 60 C150 60, 140 80, 120 90 M80 90 C90 110, 110 110, 120 90" fill="none" stroke="#7a5c61" stroke-width="3" stroke-linecap="round"/>
+        </svg>
 
-            <div class="lined-area">
+        <div class="scroll-container">
+            <div class="text-content">
                 <p class="greeting">To my Cutulii putuliii diyuuu,</p>
                 <p>Timilai kati maya garchu bhannu nai sakdina… handwritten note jastai samjhinu hai yo letter lai, kina bhane yo sab kura direct mero mutu bata aako ho.</p>
                 <p>When I first saw you, I remember thinking, "Wow… she's so pretty." Honestly, I felt like you were completely out of my league. I used to look at you and think, "Yesto ramri manche sanga bolna pani dar lagcha." Little did I know that this "league" would want to be with me. Life is funny, isn't it?</p>
@@ -213,6 +203,11 @@ body {
                 <p class="signature">Yours forever,<br>Your dearest,<br>Aryuuu</p>
             </div>
         </div>
+
+        <svg class="hand-drawn-flower flower-bottom" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 180 C100 120, 110 90, 100 40 M100 130 C70 110, 50 130, 40 90 M100 100 C130 80, 150 100, 160 60 M100 40 C80 20, 60 40, 70 60 C80 80, 100 60, 100 40 M100 40 C120 20, 140 40, 130 60 C120 80, 100 60, 100 40 M70 60 C50 60, 60 80, 80 90 M130 60 C150 60, 140 80, 120 90 M80 90 C90 110, 110 110, 120 90" fill="none" stroke="#7a5c61" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+
     </div>
 </div>
 
@@ -231,12 +226,12 @@ function onYouTubeIframeAPIReady() {
 document.addEventListener("DOMContentLoaded", function () {
     const bg = document.getElementById('hearts-bg');
     if (bg) {
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 20; i++) {
             const heart = document.createElement('div');
             heart.innerHTML = "🤍";
             heart.classList.add('heart');
             heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() * 8 + 10) + "s";
+            heart.style.animationDuration = (Math.random() * 6 + 8) + "s";
             heart.style.animationDelay = (Math.random() * 5) + "s";
             bg.appendChild(heart);
         }
