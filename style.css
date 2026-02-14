@@ -11,21 +11,15 @@ body {
     overflow-x: hidden;
 }
 
-/* Subtle, elegant floating hearts/petals */
+/* Subtle, elegant floating hearts */
 .hearts-bg {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: -1;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: -1;
 }
 
 .heart {
-    position: absolute;
-    color: #E8C1C9; /* Soft dusty pink */
-    font-size: 1.2rem;
-    animation: floatUp 10s linear infinite;
-    opacity: 0.4;
-    filter: blur(1px);
+    position: absolute; color: #E8C1C9; font-size: 1.2rem;
+    animation: floatUp 10s linear infinite; opacity: 0.4; filter: blur(1px);
 }
 
 @keyframes floatUp {
@@ -35,150 +29,75 @@ body {
     100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
 }
 
-.app-container {
+/* Entry Screen */
+.entry-screen {
     background: #FFFFFF;
-    padding: 2.5rem 2rem;
+    padding: 3.5rem 2.5rem;
     border-radius: 24px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
     text-align: center;
     width: 100%;
-    max-width: 420px;
-    position: relative;
-    overflow: hidden;
+    max-width: 400px;
 }
 
-h1, h2, h3 {
-    font-family: 'Lora', serif; /* Elegant, editorial font */
-    color: #2C2C2C;
-    margin-bottom: 5px;
+.entry-screen h2 {
+    font-family: 'Lora', serif;
+    color: #B56576;
+    margin-bottom: 25px;
+    font-size: 1.6rem;
 }
 
-h1 { font-size: 1.8rem; font-style: italic; color: #B56576; }
-.subtitle { font-size: 0.85rem; color: #888; margin-bottom: 20px; font-weight: 300; }
-
-h3 { font-size: 1.1rem; color: #B56576; margin-bottom: 15px; }
-
-.gift-display {
-    margin: 1.5rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* The DigiBouquet style aesthetic wrapper */
 .flower-wrapper {
     background: linear-gradient(135deg, #FDF1F4, #FFF);
-    border-radius: 50%;
-    width: 140px;
-    height: 140px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 50%; width: 140px; height: 140px;
+    display: flex; justify-content: center; align-items: center;
     box-shadow: inset 0 0 20px rgba(229, 152, 155, 0.1), 0 10px 20px rgba(0,0,0,0.03);
-    margin-bottom: 20px;
     border: 1px solid rgba(229, 152, 155, 0.2);
 }
 
-#gift-emoji { 
-    font-size: 4.5rem; 
-    filter: drop-shadow(0 8px 8px rgba(0,0,0,0.15)); /* Adds 3D depth to emoji */
-}
-
-#gift-name {
-    font-size: 1.4rem;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-/* Beautiful card for your messages */
-.letter-box {
-    background: #FAFAFA;
-    padding: 15px 20px;
-    border-radius: 12px;
-    border-left: 3px solid #B56576;
-    margin-bottom: 20px;
-    width: 90%;
-}
-
-#gift-message {
-    font-size: 0.95rem;
-    color: #555;
-    margin: 0;
-    line-height: 1.5;
-    font-weight: 300;
-}
-
-#reveal-btn {
-    background: #B56576; /* Sophisticated muted rose */
-    color: white;
-    border: none;
-    padding: 14px 28px;
-    border-radius: 30px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 15px rgba(181, 101, 118, 0.25);
+button {
+    background: #B56576; color: white; border: none; padding: 16px 32px;
+    border-radius: 30px; font-size: 1rem; font-weight: 500;
+    font-family: 'Poppins', sans-serif; cursor: pointer;
+    transition: all 0.3s ease; box-shadow: 0 8px 15px rgba(181, 101, 118, 0.25);
     width: 100%;
 }
 
-#reveal-btn:hover { 
-    background: #9D5363; 
-    transform: translateY(-2px);
+button:hover { 
+    background: #9D5363; transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(181, 101, 118, 0.35);
 }
 
-#reveal-btn:disabled { 
-    background: #E0E0E0; 
-    color: #A0A0A0;
-    transform: none; 
-    cursor: not-allowed; 
-    box-shadow: none;
+/* The Letter */
+.final-letter-container {
+    display: flex; justify-content: center; align-items: center;
+    width: 100%; max-width: 550px; margin: 0 auto; z-index: 10;
 }
 
-.divider { 
-    border: 0; 
-    height: 1px; 
-    background: linear-gradient(90deg, transparent, #E8C1C9, transparent); 
-    margin: 30px 0; 
+.letter-paper {
+    background: #FFFAF4; /* Subtle warm paper tone */
+    padding: 3rem 2.5rem; border-radius: 16px;
+    box-shadow: 0 25px 50px rgba(181, 101, 118, 0.2);
+    border: 1px solid rgba(229, 152, 155, 0.3); text-align: left;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+.letter-paper h2 {
+    font-family: 'Lora', serif; color: #B56576; font-size: 1.5rem; margin-bottom: 25px;
 }
 
-.grid-item {
-    background: #FAFAFA;
-    border-radius: 12px;
-    font-size: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 55px;
-    transition: transform 0.3s ease;
-    border: 1px solid #F0F0F0;
+.letter-paper p {
+    font-family: 'Poppins', sans-serif; color: #4A4A4A; font-size: 0.95rem; 
+    line-height: 1.8; margin-bottom: 18px;
 }
 
-.locked { 
-    background: #F5F5F5; 
-    color: #DDD;
-    font-size: 1.2rem;
-}
-
-.unlocked { 
-    background: #FFFFFF;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
-    border-color: #FDF1F4;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+.letter-paper .signature {
+    margin-top: 35px; font-family: 'Lora', serif; color: #B56576; 
+    font-size: 1.1rem; text-align: right; line-height: 1.4;
 }
 
 @keyframes popIn {
     0% { transform: scale(0.9); opacity: 0; }
-    50% { transform: scale(1.05); }
+    50% { transform: scale(1.02); }
     100% { transform: scale(1); opacity: 1; }
 }
-.pop-animation { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.pop-animation { animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
