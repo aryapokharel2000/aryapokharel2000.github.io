@@ -172,7 +172,7 @@ body {
 </head>
 <body>
 
-<div style="position: absolute; top: -9999px; left: -9999px;">
+<div style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; overflow: hidden;">
     <div id="youtube-player"></div>
 </div>
 
@@ -216,10 +216,10 @@ body {
 let player;
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
-        height: '0',
-        width: '0',
+        height: '1',
+        width: '1',
         videoId: '5CeZT3B4faU',
-        playerVars: { autoplay: 0, controls: 0, start: 110 },
+        playerVars: { autoplay: 0, controls: 0, start: 110, playsinline: 1 },
         events: { onReady: function (event) { event.target.setVolume(40); } }
     });
 }
