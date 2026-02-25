@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ID-RSA Formatter</title>
+    <title>SSH Clean | Key Repair</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -47,12 +47,14 @@
         .result-area { margin-top: 32px; display: none; }
         .result-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 700; color: var(--subtext); }
         #copy-btn { background: none; border: none; color: var(--accent); cursor: pointer; font-weight: 800; }
+        
         pre {
             padding: 20px; background: var(--pre-bg); border-radius: 12px;
             overflow-x: auto; font-size: 11px; border: 1px solid var(--accent);
-            color: var(--accent); white-space: pre-wrap; word-break: break-all;
+            color: var(--accent); white-space: pre; word-break: normal;
         }
-        .history { margin-top: 32px; border-top: 1px solid var(--border); paddingTop: 20px; display: none; }
+
+        .history { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 20px; display: none; }
         .history-item { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; opacity: 0.7; }
     </style>
 </head>
@@ -67,7 +69,7 @@
     </header>
 
     <div class="card">
-        <textarea id="input" placeholder="Paste your messy PEM key here..."></textarea>
+        <textarea id="input" placeholder="Paste your messy PEM key or Public Key here..."></textarea>
         <button class="btn-main" onclick="handleFormat()">Format & Repair Key</button>
 
         <div id="result-area" class="result-area">
@@ -96,7 +98,6 @@
         document.querySelector('.theme-toggle').innerText = next === 'dark' ? '☀️' : '🌙';
     }
 
-    // Initialize Theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.body.setAttribute('data-theme', savedTheme);
     document.querySelector('.theme-toggle').innerText = savedTheme === 'dark' ? '☀️' : '🌙';
@@ -105,27 +106,47 @@
     function handleFormat() {
         const input = document.getElementById('input').value;
         const cleaned = input.replace(/\r\n/g, "\n").trim();
+        
+        // Handle standard one-line Public Keys
+        if (cleaned.startsWith("ssh-") || cleaned.startsWith("ecdsa-")) {
+            const parts = cleaned.split(/\s+/);
+            const formatted = parts.join(" ");
+            showResult(formatted, "Standard Public Key");
+            return;
+        }
+
+        // Handle PEM blocks
         const pemRegex = /(-----BEGIN ([A-Z ]+)-----)([\s\S]*?)(-----END \2-----)/i;
         const match = cleaned.match(pemRegex);
 
         if (!match) {
-            alert("No valid PEM block found. Check your headers and footers.");
+            alert("❌ No valid SSH key found. Ensure it has -----BEGIN... headers or starts with ssh-.");
             return;
         }
 
         const header = match[1].trim();
         const keyType = match[2].trim();
         const footer = match[4].trim();
+        
         const rawBase64 = match[3].replace(/\s+/g, "");
-        const wrapped = rawBase64.match(/.{1,64}/g).join("\n");
+
+        if (!rawBase64) {
+            alert("❌ The key body appears to be empty. Check your input.");
+            return;
+        }
+
+        const wrappedChunks = rawBase64.match(/.{1,64}/g);
+        const wrapped = wrappedChunks ? wrappedChunks.join("\n") : "";
         const formatted = `${header}\n${wrapped}\n${footer}`;
 
-        // Show Result
-        document.getElementById('result-area').style.display = 'block';
-        document.getElementById('output').innerText = formatted;
-        document.getElementById('key-type').innerText = keyType;
+        showResult(formatted, keyType);
+    }
 
-        updateHistory(keyType);
+    function showResult(formattedText, typeLabel) {
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('output').innerText = formattedText;
+        document.getElementById('key-type').innerText = typeLabel;
+        updateHistory(typeLabel);
     }
 
     function updateHistory(type) {
@@ -150,6 +171,7 @@
         }
     }
 
+    // Copy to Clipboard
     function copyResult() {
         const text = document.getElementById('output').innerText;
         navigator.clipboard.writeText(text).then(() => {
@@ -159,7 +181,6 @@
         });
     }
 
-    // Load history on start
     renderHistory(JSON.parse(localStorage.getItem('ssh_history') || "[]"));
 </script>
 
