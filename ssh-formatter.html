@@ -3,68 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSH Config Formatter</title>
+    <title>ID-RSA Formatter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, sans-serif; background: #f4f7f6; padding: 40px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { color: #333; }
-        textarea { width: 100%; height: 200px; margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; box-sizing: border-box; }
-        .button-group { margin-bottom: 20px; }
-        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; }
-        .btn-primary { background: #2ea44f; color: white; }
-        .btn-secondary { background: #0366d6; color: white; margin-left: 10px; }
-        button:hover { opacity: 0.9; }
-        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; }
+        :root {
+            --bg: #ffffff; --card: #f8fafc; --text: #0f172a; --subtext: #64748b;
+            --border: #e2e8f0; --accent: #6366f1; --pre-bg: #f1f5f9;
+        }
+        [data-theme="dark"] {
+            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --subtext: #94a3b8;
+            --border: #334155; --accent: #818cf8; --pre-bg: #0d1117;
+        }
+        body {
+            background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif;
+            transition: all 0.4s ease; margin: 0; padding: 40px 20px; min-height: 100vh;
+        }
+        .container { max-width: 700px; margin: 0 auto; position: relative; }
+        .theme-toggle {
+            position: absolute; top: 0; right: 0; background: var(--card); border: 1px solid var(--border);
+            border-radius: 50%; width: 45px; height: 45px; cursor: pointer; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 2.5rem; letter-spacing: -1.5px; margin: 0; }
+        h1 span { color: var(--accent); }
+        .card {
+            background: var(--card); border-radius: 24px; padding: 32px;
+            border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        textarea {
+            width: 100%; height: 160px; border-radius: 16px; padding: 20px;
+            background: var(--bg); color: var(--text); border: 1px solid var(--border);
+            outline: none; font-family: monospace; resize: none; box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        textarea:focus { border-color: var(--accent); }
+        .btn-main {
+            width: 100%; margin-top: 20px; padding: 16px; border-radius: 12px;
+            background: var(--accent); color: #fff; border: none; font-weight: 700;
+            cursor: pointer; font-size: 1rem; transition: transform 0.2s;
+        }
+        .btn-main:active { transform: scale(0.98); }
+        .result-area { margin-top: 32px; display: none; }
+        .result-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 700; color: var(--subtext); }
+        #copy-btn { background: none; border: none; color: var(--accent); cursor: pointer; font-weight: 800; }
+        pre {
+            padding: 20px; background: var(--pre-bg); border-radius: 12px;
+            overflow-x: auto; font-size: 11px; border: 1px solid var(--accent);
+            color: var(--accent); white-space: pre-wrap; word-break: break-all;
+        }
+        .history { margin-top: 32px; border-top: 1px solid var(--border); paddingTop: 20px; display: none; }
+        .history-item { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; opacity: 0.7; }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <div class="container">
-    <h2>SSH Config Formatter</h2>
-    <p>Paste your messy SSH config below to fix spacing and indentation.</p>
+    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
     
-    <textarea id="input" placeholder="Paste messy config here..."></textarea>
-    
-    <div class="button-group">
-        <button class="btn-primary" onclick="formatSSH()">Format Config</button>
-        <button class="btn-secondary" onclick="copyToClipboard()">Copy Result</button>
-    </div>
+    <header>
+        <h1>SSH <span>Clean.</span></h1>
+        <p style="color: var(--subtext)">Repair messy PEM keys.</p>
+    </header>
 
-    <pre id="output">Your formatted config will appear here...</pre>
+    <div class="card">
+        <textarea id="input" placeholder="Paste your messy PEM key here..."></textarea>
+        <button class="btn-main" onclick="handleFormat()">Format & Repair Key</button>
+
+        <div id="result-area" class="result-area">
+            <div class="result-header">
+                <span id="key-type">RESULT</span>
+                <button id="copy-btn" onclick="copyResult()">COPY KEY</button>
+            </div>
+            <pre id="output"></pre>
+        </div>
+
+        <div id="history-section" class="history">
+            <p style="font-size: 10px; font-weight: 800; color: var(--subtext); text-transform: uppercase;">Recent Activity</p>
+            <div id="history-list"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-    function formatSSH() {
+    // Theme Management
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        document.querySelector('.theme-toggle').innerText = next === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Initialize Theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.setAttribute('data-theme', savedTheme);
+    document.querySelector('.theme-toggle').innerText = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    // Formatting Logic
+    function handleFormat() {
         const input = document.getElementById('input').value;
-        const lines = input.split('\n');
-        let formattedLines = [];
+        const cleaned = input.replace(/\r\n/g, "\n").trim();
+        const pemRegex = /(-----BEGIN ([A-Z ]+)-----)([\s\S]*?)(-----END \2-----)/i;
+        const match = cleaned.match(pemRegex);
 
-        lines.forEach(line => {
-            const cleanLine = line.trim();
-            
-            // Skip empty lines
-            if (cleanLine === "") return;
+        if (!match) {
+            alert("No valid PEM block found. Check your headers and footers.");
+            return;
+        }
 
-            // Check if line starts with 'Host' or 'Match' (case insensitive)
-            if (cleanLine.toLowerCase().startsWith('host') || cleanLine.toLowerCase().startsWith('match')) {
-                // Top-level directives have 0 indentation
-                formattedLines.push(cleanLine);
-            } else {
-                // All other parameters get 4 spaces of indentation
-                formattedLines.push("    " + cleanLine);
-            }
-        });
+        const header = match[1].trim();
+        const keyType = match[2].trim();
+        const footer = match[4].trim();
+        const rawBase64 = match[3].replace(/\s+/g, "");
+        const wrapped = rawBase64.match(/.{1,64}/g).join("\n");
+        const formatted = `${header}\n${wrapped}\n${footer}`;
 
-        const result = formattedLines.join('\n');
-        document.getElementById('output').textContent = result;
+        // Show Result
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('output').innerText = formatted;
+        document.getElementById('key-type').innerText = keyType;
+
+        updateHistory(keyType);
     }
 
-    function copyToClipboard() {
-        const text = document.getElementById('output').textContent;
+    function updateHistory(type) {
+        let history = JSON.parse(localStorage.getItem('ssh_history') || "[]");
+        const newItem = { type, date: new Date().toLocaleTimeString() };
+        history = [newItem, ...history].slice(0, 3);
+        localStorage.setItem('ssh_history', JSON.stringify(history));
+        renderHistory(history);
+    }
+
+    function renderHistory(history) {
+        const list = document.getElementById('history-list');
+        const section = document.getElementById('history-section');
+        if (history.length > 0) {
+            section.style.display = 'block';
+            list.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <span>${item.type}</span>
+                    <span>${item.date}</span>
+                </div>
+            `).join('');
+        }
+    }
+
+    function copyResult() {
+        const text = document.getElementById('output').innerText;
         navigator.clipboard.writeText(text).then(() => {
-            alert("Copied to clipboard!");
+            const btn = document.getElementById('copy-btn');
+            btn.innerText = "✓ COPIED";
+            setTimeout(() => btn.innerText = "COPY KEY", 2000);
         });
     }
+
+    // Load history on start
+    renderHistory(JSON.parse(localStorage.getItem('ssh_history') || "[]"));
 </script>
 
 </body>
