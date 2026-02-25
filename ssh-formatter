@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSH Config Formatter</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #f4f7f6; padding: 40px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { color: #333; }
+        textarea { width: 100%; height: 200px; margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; box-sizing: border-box; }
+        .button-group { margin-bottom: 20px; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; }
+        .btn-primary { background: #2ea44f; color: white; }
+        .btn-secondary { background: #0366d6; color: white; margin-left: 10px; }
+        button:hover { opacity: 0.9; }
+        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>SSH Config Formatter</h2>
+    <p>Paste your messy SSH config below to fix spacing and indentation.</p>
+    
+    <textarea id="input" placeholder="Paste messy config here..."></textarea>
+    
+    <div class="button-group">
+        <button class="btn-primary" onclick="formatSSH()">Format Config</button>
+        <button class="btn-secondary" onclick="copyToClipboard()">Copy Result</button>
+    </div>
+
+    <pre id="output">Your formatted config will appear here...</pre>
+</div>
+
+<script>
+    function formatSSH() {
+        const input = document.getElementById('input').value;
+        const lines = input.split('\n');
+        let formattedLines = [];
+
+        lines.forEach(line => {
+            const cleanLine = line.trim();
+            
+            // Skip empty lines
+            if (cleanLine === "") return;
+
+            // Check if line starts with 'Host' or 'Match' (case insensitive)
+            if (cleanLine.toLowerCase().startsWith('host') || cleanLine.toLowerCase().startsWith('match')) {
+                // Top-level directives have 0 indentation
+                formattedLines.push(cleanLine);
+            } else {
+                // All other parameters get 4 spaces of indentation
+                formattedLines.push("    " + cleanLine);
+            }
+        });
+
+        const result = formattedLines.join('\n');
+        document.getElementById('output').textContent = result;
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('output').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Copied to clipboard!");
+        });
+    }
+</script>
+
+</body>
+</html>
